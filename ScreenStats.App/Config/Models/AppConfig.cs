@@ -2,6 +2,7 @@
 
 public class AppConfig
 {
-    public BackgroundConfig Background { get; set; } = new();
-    public Dictionary<string, WidgetConfig> Widgets { get; set; } = new();
+    public BackgroundConfig Background { get; } = new();
+    public LayoutConfig Layout { get; } = new();
+    public Dictionary<string, WidgetConfig> Widgets { get; } = new();
 }

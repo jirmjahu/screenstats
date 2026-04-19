@@ -64,7 +64,7 @@ public static class WindowHelper
         {
             if (NativeMethods.FindWindowEx(current, IntPtr.Zero, "SHELLDLL_DefView", null) != IntPtr.Zero)
             {
-                return NativeMethods.FindWindowEx(IntPtr.Zero, current, "WorkerW", null);
+                return current;
             }
         }
 

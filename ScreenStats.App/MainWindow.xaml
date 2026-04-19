@@ -5,15 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="ScreenStats"
-        Height="450" 
-        Width="800"
         ResizeMode="NoResize"
         Topmost="False"
         ShowInTaskbar="False"
         AllowsTransparency="True"
         Background="Transparent"
+        SizeToContent="Height"
+        Loaded="MainWindow_OnLoaded"
         WindowStyle="None">
+
     <Grid>
-        <Label Content="Testttt" Foreground="White" FontSize="50"></Label>
+        <Border x:Name="Background"></Border>
+        <StackPanel x:Name="Panel" Orientation="Vertical"></StackPanel>
     </Grid>
+    
 </Window>

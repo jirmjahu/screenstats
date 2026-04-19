@@ -15,6 +15,7 @@ public static class ConfigLoader
         var appConfig = new AppConfig();
 
         config.GetSection("background").Bind(appConfig.Background);
+        config.GetSection("layout").Bind(appConfig.Layout);
 
         foreach (var section in config.GetSection("widgets").GetChildren())
         {
