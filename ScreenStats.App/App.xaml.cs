@@ -4,7 +4,8 @@ namespace ScreenStats.App;
 
 public partial class App : Application
 {
-    
-    
-    
+    public App()
+    {
+        
+    }
 }
