@@ -12,11 +12,7 @@ public static class ConfigLoader
             .AddIniFile(path, optional: false, reloadOnChange: true)
             .Build();
 
-        var appConfig = new AppConfig
-        {
-            Background = new BackgroundConfig(),
-            Widgets = new Dictionary<string, WidgetConfig>()
-        };
+        var appConfig = new AppConfig();
 
         config.GetSection("background").Bind(appConfig.Background);
 
@@ -44,7 +40,7 @@ public static class ConfigLoader
                 appConfig.Widgets[section.Key] = widget;
             }
         }
-
+        
         return appConfig;
     }
 }
