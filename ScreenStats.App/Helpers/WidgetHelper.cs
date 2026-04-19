@@ -5,8 +5,13 @@ namespace ScreenStats.App.Helpers;
 
 public static class WidgetHelper
 {
-    
-    public static List<Widget> GetWidgetsFromConfig(AppConfig appConfig)
+ 
+    /// <summary>
+    /// Creates widget objects from the app configuration
+    /// </summary>
+    /// <param name="appConfig">The configuration with widget settings</param>
+    /// <returns>The list of created widgets</returns>
+    public static List<Widget> CreateWidgetsFromConfig(AppConfig appConfig)
     {
         var widgets = new List<Widget>();
 

@@ -21,7 +21,7 @@ public partial class MainWindow : Window
         InitializeComponent();
 
         _config = ConfigLoader.Load("/", "config.ini");
-        _widgets = WidgetHelper.GetWidgetsFromConfig(_config);
+        _widgets = WidgetHelper.CreateWidgetsFromConfig(_config);
         
         var layout = _config.Layout;
         
@@ -39,7 +39,7 @@ public partial class MainWindow : Window
 
         Panel.Children.Clear();
         
-        WidgetRenderer.Render(this, Background, Panel, _config, _widgets);
+        WidgetRenderer.Render(Panel, _config.Layout, _widgets);
 
         _updateTimer = CreateUpdateTimer();
         _updateTimer.Start();
