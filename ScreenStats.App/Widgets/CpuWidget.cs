@@ -15,7 +15,7 @@ public class CpuWidget : UpdateableWidget, INotifyPropertyChanged
     public double ValueFontSize { get; set; }
 
     public string Color { get; set; }
-    public bool ShowProgress { get; set; }
+    public bool ShowBar { get; set; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -34,13 +34,13 @@ public class CpuWidget : UpdateableWidget, INotifyPropertyChanged
         }
     }
 
-    public CpuWidget(string label, double fontSize, double valueFontSize, string color, bool showProgress)
+    public CpuWidget(string label, double fontSize, double valueFontSize, string color, bool showBar)
     {
         Label = label;
         FontSize = fontSize;
         ValueFontSize = valueFontSize;
         Color = color;
-        ShowProgress = showProgress;
+        ShowBar = showBar;
 
         _cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
         _cpuCounter.NextValue();

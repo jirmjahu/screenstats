@@ -6,5 +6,5 @@ public class CpuWidgetConfig : WidgetConfig
     public double FontSize { get; set; }
     public double ValueFontSize { get; set; }
     public string Color { get; set; }
-    public bool ShowProgress { get; set; }
+    public bool ShowBar { get; set; }
 }

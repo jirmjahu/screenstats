@@ -24,7 +24,7 @@ public static class WidgetHelper
 
             if (config is CpuWidgetConfig cpuConfig)
             {
-                widgets.Add(new CpuWidget(cpuConfig.Label, cpuConfig.FontSize, cpuConfig.ValueFontSize, cpuConfig.Color, cpuConfig.ShowProgress));
+                widgets.Add(new CpuWidget(cpuConfig.Label, cpuConfig.FontSize, cpuConfig.ValueFontSize, cpuConfig.Color, cpuConfig.ShowBar));
             }
             // TODO: Add other types
         }
