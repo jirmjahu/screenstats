@@ -6,7 +6,7 @@ using ScreenStats.App.Config;
 using ScreenStats.App.Config.Models;
 using ScreenStats.App.Helpers;
 using ScreenStats.App.Render;
-using ScreenStats.App.ViewModels;
+using ScreenStats.App.Widgets;
 
 namespace ScreenStats.App;
 

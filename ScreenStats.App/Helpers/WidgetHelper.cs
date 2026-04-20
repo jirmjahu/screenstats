@@ -1,5 +1,5 @@
 ﻿using ScreenStats.App.Config.Models;
-using ScreenStats.App.ViewModels;
+using ScreenStats.App.Widgets;
 
 namespace ScreenStats.App.Helpers;
 
@@ -26,7 +26,11 @@ public static class WidgetHelper
             {
                 widgets.Add(new CpuWidget(cpuConfig.Label, cpuConfig.FontSize, cpuConfig.ValueFontSize, cpuConfig.Color, cpuConfig.ShowBar));
             }
-            // TODO: Add other types
+
+            if (config is RamWidgetConfig ramConfig)
+            {
+                widgets.Add(new RamWidget(ramConfig.Label, ramConfig.FontSize, ramConfig.ValueFontSize, ramConfig.Color, ramConfig.ShowBar ));
+            }
         }
 
         return widgets;

@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using ScreenStats.App.Controls;
 
-namespace ScreenStats.App.ViewModels;
+namespace ScreenStats.App.Widgets;
 
 public class TextWidget(string content, double fontSize) : UpdateableWidget, INotifyPropertyChanged
 {

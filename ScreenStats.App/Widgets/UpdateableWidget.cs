@@ -1,4 +1,4 @@
-﻿namespace ScreenStats.App.ViewModels;
+﻿namespace ScreenStats.App.Widgets;
 
 public abstract class UpdateableWidget : Widget
 {

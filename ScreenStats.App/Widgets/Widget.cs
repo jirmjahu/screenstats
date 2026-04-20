@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace ScreenStats.App.ViewModels;
+namespace ScreenStats.App.Widgets;
 
 public abstract class Widget
 {

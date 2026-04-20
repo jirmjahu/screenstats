@@ -3,19 +3,20 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using ScreenStats.App.Controls;
 
-namespace ScreenStats.App.ViewModels;
+namespace ScreenStats.App.Widgets;
 
-public class CpuWidget : UpdateableWidget, INotifyPropertyChanged
+public class CpuWidget(string label, double fontSize, double valueFontSize, string color, bool showBar)
+    : UpdateableWidget, INotifyPropertyChanged
 {
-    private readonly PerformanceCounter _cpuCounter;
+    private readonly PerformanceCounter _cpuCounter = new("Processor", "% Processor Time", "_Total");
+    
     private float _usage;
 
-    public string Label { get; set; }
-    public double FontSize { get; set; }
-    public double ValueFontSize { get; set; }
-
-    public string Color { get; set; }
-    public bool ShowBar { get; set; }
+    public string Label { get; set; } = label;
+    public double FontSize { get; set; } = fontSize;
+    public double ValueFontSize { get; set; } = valueFontSize;
+    public string Color { get; set; } = color;
+    public bool ShowBar { get; set; } = showBar;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -32,18 +33,6 @@ public class CpuWidget : UpdateableWidget, INotifyPropertyChanged
             _usage = value;
             PropertyChanged?.Invoke(this, new(nameof(Usage)));
         }
-    }
-
-    public CpuWidget(string label, double fontSize, double valueFontSize, string color, bool showBar)
-    {
-        Label = label;
-        FontSize = fontSize;
-        ValueFontSize = valueFontSize;
-        Color = color;
-        ShowBar = showBar;
-
-        _cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-        _cpuCounter.NextValue();
     }
 
     public override void Update()

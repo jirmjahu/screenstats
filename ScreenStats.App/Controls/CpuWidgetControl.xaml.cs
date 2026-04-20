@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using ScreenStats.App.ViewModels;
+using ScreenStats.App.Widgets;
 
 namespace ScreenStats.App.Controls;
 
