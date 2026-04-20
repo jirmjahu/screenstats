@@ -3,9 +3,9 @@ using ScreenStats.App.ViewModels;
 
 namespace ScreenStats.App.Controls;
 
-public partial class TextWidgetControl : UserControl
+public partial class CpuWidgetControl : UserControl
 {
-    public TextWidgetControl(Widget widget)
+    public CpuWidgetControl(Widget widget)
     {
         InitializeComponent();
         DataContext = widget;

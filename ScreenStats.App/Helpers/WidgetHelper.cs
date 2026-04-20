@@ -17,9 +17,14 @@ public static class WidgetHelper
 
         foreach (var config in appConfig.Widgets.Values)
         {
-            if (config.Type == "text" && config is TextWidgetConfig textConfig)
+            if (config is TextWidgetConfig textConfig)
             {
                 widgets.Add(new TextWidget(textConfig.Content, textConfig.FontSize));
+            }
+
+            if (config is CpuWidgetConfig cpuConfig)
+            {
+                widgets.Add(new CpuWidget(cpuConfig.Label, cpuConfig.FontSize, cpuConfig.ValueFontSize, cpuConfig.Color, cpuConfig.ShowProgress));
             }
             // TODO: Add other types
         }
