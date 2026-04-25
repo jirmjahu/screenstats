@@ -10,11 +10,4 @@ public partial class CpuWidgetControl : UserControl
         InitializeComponent();
         DataContext = widget;
     }
-
-    public void Update(float usage, string barColor)
-    {
-        Bar.SetValue(usage);
-        Bar.SetColor(barColor);
-    }
-    
 }

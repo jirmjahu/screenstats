@@ -14,20 +14,19 @@ public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
     private GlobalSystemMediaTransportControlsSessionManager? _manager;
     private GlobalSystemMediaTransportControlsSession? _session;
 
-    private string _title = "No media";
-    private string _artist = "";
-    private bool _isPlaying;
+    private string _title;
+    private string _artist;
+    private string _statusText;
     private BitmapImage? _thumbnail;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public string Title
     {
         get => _title;
         set
         {
-            if (_title == value)
-            {
-                return;
-            }
+            if (_title == value) return;
 
             _title = value;
             PropertyChanged?.Invoke(this, new(nameof(Title)));
@@ -39,28 +38,22 @@ public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
         get => _artist;
         set
         {
-            if (_artist == value)
-            {
-                return;
-            }
+            if (_artist == value) return;
 
             _artist = value;
             PropertyChanged?.Invoke(this, new(nameof(Artist)));
         }
     }
 
-    public bool IsPlaying
+    public string StatusText
     {
-        get => _isPlaying;
+        get => _statusText;
         set
         {
-            if (_isPlaying == value)
-            {
-                return;
-            }
+            if (_statusText == value) return;
 
-            _isPlaying = value;
-            PropertyChanged?.Invoke(this, new(nameof(IsPlaying)));
+            _statusText = value;
+            PropertyChanged?.Invoke(this, new(nameof(StatusText)));
         }
     }
 
@@ -69,17 +62,12 @@ public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
         get => _thumbnail;
         set
         {
-            if (_thumbnail == value)
-            {
-                return;
-            }
+            if (_thumbnail == value) return;
 
             _thumbnail = value;
             PropertyChanged?.Invoke(this, new(nameof(Thumbnail)));
         }
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
 
     public MediaWidget()
     {
@@ -109,10 +97,11 @@ public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
 
         Title = media.Title ?? "Unknown";
         Artist = media.Artist ?? "Unknown";
-        IsPlaying = playback.PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
-        Thumbnail = ThumbnailHelper.GetThumbnail(media.Thumbnail);
 
-        _control?.Update(Title, Artist, IsPlaying, Thumbnail);
+        var isPlaying = playback.PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
+        StatusText = isPlaying ? "▶︎ Playing" : "⏸ Paused";
+
+        Thumbnail = ThumbnailHelper.GetThumbnail(media.Thumbnail);
     }
 
     public override UserControl GetControl()

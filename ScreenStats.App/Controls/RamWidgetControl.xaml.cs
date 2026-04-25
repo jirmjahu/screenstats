@@ -10,10 +10,4 @@ public partial class RamWidgetControl : UserControl
         InitializeComponent();
         DataContext = widget;
     }
-    
-    public void Update(double usage, string barColor)
-    {
-        Bar.SetValue(usage);
-        Bar.SetColor(barColor);
-    }
 }

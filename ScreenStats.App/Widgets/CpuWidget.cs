@@ -14,8 +14,6 @@ public class CpuWidget(
     bool showBar)
     : UpdateableWidget, INotifyPropertyChanged
 {
-    private CpuWidgetControl _control;
-
     private readonly PerformanceCounter _cpuCounter = new("Processor", "% Processor Time", "_Total");
 
     private float _usage;
@@ -34,11 +32,6 @@ public class CpuWidget(
         get => _usage;
         set
         {
-            if (_usage == value)
-            {
-                return;
-            }
-
             _usage = value;
             PropertyChanged?.Invoke(this, new(nameof(Usage)));
         }
@@ -47,12 +40,10 @@ public class CpuWidget(
     public override void Update()
     {
         Usage = (float)Math.Round(_cpuCounter.NextValue(), 1);
-        _control.Update(Usage, Color);
     }
 
     public override UserControl GetControl()
     {
-        _control = new CpuWidgetControl(this);
-        return _control;
+        return new CpuWidgetControl(this);
     }
 }

@@ -14,11 +14,10 @@ public class RamWidget(
     bool showBar)
     : UpdateableWidget, INotifyPropertyChanged
 {
-    private RamWidgetControl _control;
-
     private readonly PerformanceCounter _ramCounter = new("Memory", "Available MBytes");
 
     private string _usageText = "";
+    private double _usage;
 
     public string Label { get; set; } = label;
     public string FontFamily { get; set; } = fontFamily;
@@ -34,21 +33,28 @@ public class RamWidget(
         get => _usageText;
         set
         {
-            if (_usageText == value)
-            {
-                return;
-            }
+            if (_usageText == value) return;
 
             _usageText = value;
             PropertyChanged?.Invoke(this, new(nameof(UsageText)));
         }
     }
 
+    public double Usage
+    {
+        get => _usage;
+        set
+        {
+            _usage = value;
+            PropertyChanged?.Invoke(this, new(nameof(Usage)));
+        }
+    }
+
     public override void Update()
     {
         // Source: https://stackoverflow.com/a/59073095
-        var gcMemoryInfo = GC.GetGCMemoryInfo();
-        var installedMemory = gcMemoryInfo.TotalAvailableMemoryBytes;
+        var memoryInfo = GC.GetGCMemoryInfo();
+        var installedMemory = memoryInfo.TotalAvailableMemoryBytes;
         var totalMb = installedMemory / 1048576.0;
 
         var availableMb = _ramCounter.NextValue();
@@ -57,14 +63,11 @@ public class RamWidget(
         var totalGb = totalMb / 1024f;
 
         UsageText = $"{usedGb:0.0} / {totalGb:0.0} GB";
-
-        var usedPercent = (usedMb / totalMb) * 100;
-        _control.Update(usedPercent, Color);
+        Usage = (usedMb / totalMb) * 100;
     }
 
     public override UserControl GetControl()
     {
-        _control = new RamWidgetControl(this);
-        return _control;
+        return new RamWidgetControl(this);
     }
 }

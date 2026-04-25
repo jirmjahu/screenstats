@@ -6,7 +6,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
-    
+
     <Grid Margin="0, 0, 0, 10">
         <StackPanel>
             <TextBlock Text="{Binding Label}"
@@ -21,9 +21,10 @@
                        Foreground="{Binding Color}" />
 
             <controls:UsageBarControl
-                x:Name="Bar"
+                Value="{Binding Usage}"
+                BarColor="{Binding Color}"
                 Margin="0,5,0,0"
-                Visibility="{Binding ShowBar, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                Visibility="{Binding ShowBar, Converter={StaticResource BooleanToVisibilityConverter}}" />
         </StackPanel>
     </Grid>
 </UserControl>
