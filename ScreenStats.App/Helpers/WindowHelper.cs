@@ -13,13 +13,7 @@ public static class WindowHelper
     public static void MakeDesktopWidget(Window window)
     {
         var hwnd = new WindowInteropHelper(window).Handle;
-        var worker = GetWorkerW();
-
-        // Attach the window to the WorkerW window (that will make it stay behind the desktop icons)
-        if (worker != IntPtr.Zero)
-        {
-            NativeMethods.SetParent(hwnd, worker);
-        }
+        var progman = NativeMethods.FindWindow("Progman", null);
 
         // Move this window behind every other
         NativeMethods.SetWindowPos(
@@ -29,44 +23,21 @@ public static class WindowHelper
             0,
             0,
             0,
-            NativeMethods.SWP_FLAGS
+            NativeMethods.SWP_NOMOVE | NativeMethods.SWP_NOSIZE | NativeMethods.SWP_NOACTIVATE
         );
 
+        // Set Progman as owner of the window so it is bound to the desktop
+        // This also prevents it from being hidden by Win+D or the Show Desktop button
+        NativeMethods.SetWindowLongPtr(hwnd, NativeMethods.GWLP_HWNDPARENT, progman);
+
         // Apply widget styles
-        var style = NativeMethods.GetWindowLong(hwnd, NativeMethods.GWL_EXSTYLE);
+        var style = NativeMethods.GetWindowLongPtr(hwnd, NativeMethods.GWL_EXSTYLE);
 
         style |= NativeMethods.WS_EX_TOOLWINDOW
                  | NativeMethods.WS_EX_NOACTIVATE
                  | NativeMethods.WS_EX_TRANSPARENT
                  | NativeMethods.WS_EX_LAYERED;
 
-        NativeMethods.SetWindowLong(hwnd, NativeMethods.GWL_EXSTYLE, style);
-    }
-
-    private static IntPtr GetWorkerW()
-    {
-        var progman = NativeMethods.FindWindow("Progman", null);
-
-        NativeMethods.SendMessageTimeout(
-            progman,
-            NativeMethods.WM_SPAWN_WORKER,
-            IntPtr.Zero,
-            IntPtr.Zero,
-            NativeMethods.SendMessageTimeoutFlags.SMTO_NORMAL,
-            1000,
-            out _
-        );
-
-        var current = IntPtr.Zero;
-
-        while ((current = NativeMethods.FindWindowEx(IntPtr.Zero, current, "WorkerW", null)) != IntPtr.Zero)
-        {
-            if (NativeMethods.FindWindowEx(current, IntPtr.Zero, "SHELLDLL_DefView", null) != IntPtr.Zero)
-            {
-                return current;
-            }
-        }
-
-        return IntPtr.Zero;
+        NativeMethods.SetWindowLongPtr(hwnd, NativeMethods.GWL_EXSTYLE, style);
     }
 }
