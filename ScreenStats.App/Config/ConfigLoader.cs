@@ -19,6 +19,11 @@ public static class ConfigLoader
 
         foreach (var section in config.GetSection("widgets").GetChildren())
         {
+            if (!int.TryParse(section.Key, out var index))
+            {
+                continue;
+            }
+
             var type = section.GetValue<string>("Type");
 
             WidgetConfig? widget = null;
@@ -38,10 +43,10 @@ public static class ConfigLoader
 
             if (widget != null)
             {
-                appConfig.Widgets[section.Key] = widget;
+                appConfig.Widgets[index] = widget;
             }
         }
-        
+
         return appConfig;
     }
 }
