@@ -32,6 +32,11 @@ public static class WidgetHelper
                 widgets.Add(new RamWidget(ramConfig.Label, ramConfig.FontFamily, ramConfig.FontSize,
                     ramConfig.ValueFontSize, ramConfig.Color, ramConfig.ShowBar));
             }
+
+            if (config is MediaWidgetConfig mediaConfig)
+            {
+                widgets.Add(new MediaWidget());
+            }
         }
 
         return widgets;

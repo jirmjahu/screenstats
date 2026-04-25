@@ -40,6 +40,10 @@ public static class ConfigLoader
             {
                 widget = section.Get<RamWidgetConfig>();
             }
+            else if (type == "media")
+            {
+                widget = section.Get<MediaWidgetConfig>();           
+            }
 
             if (widget != null)
             {
