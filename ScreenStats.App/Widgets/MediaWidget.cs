@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using Windows.Media.Control;
 using ScreenStats.App.Controls;
+using ScreenStats.App.Helpers;
 
 namespace ScreenStats.App.Widgets;
 
@@ -15,6 +17,7 @@ public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
     private string _title = "No media";
     private string _artist = "";
     private bool _isPlaying;
+    private BitmapImage? _thumbnail;
 
     public string Title
     {
@@ -61,6 +64,21 @@ public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
         }
     }
 
+    public BitmapImage? Thumbnail
+    {
+        get => _thumbnail;
+        set
+        {
+            if (_thumbnail == value)
+            {
+                return;
+            }
+
+            _thumbnail = value;
+            PropertyChanged?.Invoke(this, new(nameof(Thumbnail)));
+        }
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public MediaWidget()
@@ -86,16 +104,15 @@ public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
             return;
         }
 
-        var mediaProps = await _session.TryGetMediaPropertiesAsync();
+        var media = await _session.TryGetMediaPropertiesAsync();
         var playback = _session.GetPlaybackInfo();
 
-        Title = mediaProps.Title ?? "Unknown";
-        Artist = mediaProps.Artist ?? "Unknown";
+        Title = media.Title ?? "Unknown";
+        Artist = media.Artist ?? "Unknown";
         IsPlaying = playback.PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
+        Thumbnail = ThumbnailHelper.GetThumbnail(media.Thumbnail);
 
-        // Todo get cover image
-
-        _control?.Update(Title, Artist, IsPlaying);
+        _control?.Update(Title, Artist, IsPlaying, Thumbnail);
     }
 
     public override UserControl GetControl()

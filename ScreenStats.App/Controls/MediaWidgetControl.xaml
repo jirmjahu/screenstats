@@ -7,7 +7,12 @@
             <ColumnDefinition Width="60" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        
+
+        <Image x:Name="ThumbnailImage"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center"
+               Width="50" />
+
         <StackPanel Grid.Column="1"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center">
@@ -16,18 +21,18 @@
                        FontSize="18"
                        FontWeight="Bold"
                        Foreground="White"
-                       Text="Title"/>
+                       Text="Title" />
 
             <TextBlock x:Name="ArtistText"
                        FontSize="12"
                        Foreground="#E4E3E9"
-                       Text="Artist"/>
-                       
+                       Text="Artist" />
+
             <TextBlock x:Name="StatusText"
                        FontSize="12"
                        Foreground="#E4E3E9"
-                       Text="Playing"/>
-                       
+                       Text="Playing" />
+
         </StackPanel>
 
     </Grid>
