@@ -5,7 +5,6 @@ namespace ScreenStats.App.Helpers;
 
 public static class WidgetHelper
 {
- 
     /// <summary>
     /// Creates widget objects from the app configuration
     /// </summary>
@@ -19,17 +18,19 @@ public static class WidgetHelper
         {
             if (config is TextWidgetConfig textConfig)
             {
-                widgets.Add(new TextWidget(textConfig.Content, textConfig.FontSize));
+                widgets.Add(new TextWidget(textConfig.Content, textConfig.FontFamily, textConfig.FontSize));
             }
 
             if (config is CpuWidgetConfig cpuConfig)
             {
-                widgets.Add(new CpuWidget(cpuConfig.Label, cpuConfig.FontSize, cpuConfig.ValueFontSize, cpuConfig.Color, cpuConfig.ShowBar));
+                widgets.Add(new CpuWidget(cpuConfig.Label, cpuConfig.FontFamily, cpuConfig.FontSize,
+                    cpuConfig.ValueFontSize, cpuConfig.Color, cpuConfig.ShowBar));
             }
 
             if (config is RamWidgetConfig ramConfig)
             {
-                widgets.Add(new RamWidget(ramConfig.Label, ramConfig.FontSize, ramConfig.ValueFontSize, ramConfig.Color, ramConfig.ShowBar ));
+                widgets.Add(new RamWidget(ramConfig.Label, ramConfig.FontFamily, ramConfig.FontSize,
+                    ramConfig.ValueFontSize, ramConfig.Color, ramConfig.ShowBar));
             }
         }
 

@@ -5,10 +5,12 @@
     <Grid Margin="0, 0, 0, 10">
         <StackPanel>
             <TextBlock Text="{Binding Label}"
+                       FontFamily="{Binding FontFamily}"
                        FontSize="{Binding FontSize}"
                        Foreground="White" />
 
             <TextBlock Text="{Binding Usage, StringFormat={}{0}%}"
+                       FontFamily="{Binding FontFamily}"
                        FontSize="{Binding ValueFontSize}"
                        FontWeight="Bold"
                        Foreground="{Binding Color}" />

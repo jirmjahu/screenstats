@@ -5,7 +5,7 @@ using ScreenStats.App.Controls;
 
 namespace ScreenStats.App.Widgets;
 
-public class RamWidget(string label, double fontSize, double valueFontSize, string color, bool showBar)
+public class RamWidget(string label, string fontFamily, double fontSize, double valueFontSize, string color, bool showBar)
     : UpdateableWidget, INotifyPropertyChanged
 {
     private readonly PerformanceCounter _ramCounter = new("Memory", "Available MBytes");
@@ -13,6 +13,7 @@ public class RamWidget(string label, double fontSize, double valueFontSize, stri
     private string _usageText = "";
 
     public string Label { get; set; } = label;
+    public string FontFamily { get; set; } = fontFamily;
     public double FontSize { get; set; } = fontSize;
     public double ValueFontSize { get; set; } = valueFontSize;
     public string Color { get; set; } = color;

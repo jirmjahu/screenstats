@@ -5,7 +5,7 @@ using ScreenStats.App.Controls;
 
 namespace ScreenStats.App.Widgets;
 
-public class CpuWidget(string label, double fontSize, double valueFontSize, string color, bool showBar)
+public class CpuWidget(string label, string fontFamily, double fontSize, double valueFontSize, string color, bool showBar)
     : UpdateableWidget, INotifyPropertyChanged
 {
     private readonly PerformanceCounter _cpuCounter = new("Processor", "% Processor Time", "_Total");
@@ -13,6 +13,7 @@ public class CpuWidget(string label, double fontSize, double valueFontSize, stri
     private float _usage;
 
     public string Label { get; set; } = label;
+    public string FontFamily { get; set; } = fontFamily;
     public double FontSize { get; set; } = fontSize;
     public double ValueFontSize { get; set; } = valueFontSize;
     public string Color { get; set; } = color;

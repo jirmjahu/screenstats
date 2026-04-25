@@ -4,7 +4,7 @@ using ScreenStats.App.Controls;
 
 namespace ScreenStats.App.Widgets;
 
-public class TextWidget(string content, double fontSize) : UpdateableWidget, INotifyPropertyChanged
+public class TextWidget(string content, string fontFamily, double fontSize) : UpdateableWidget, INotifyPropertyChanged
 {
     private string _content = content;
 
@@ -25,6 +25,7 @@ public class TextWidget(string content, double fontSize) : UpdateableWidget, INo
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    public string FontFamily { get; set; } = fontFamily;
     public double FontSize { get; set; } = fontSize;
 
     public override void Update()
