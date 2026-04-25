@@ -15,6 +15,6 @@ public partial class MediaWidgetControl : UserControl
     {
         TitleText.Text = title;
         ArtistText.Text = artist;
-        StatusText.Text = isPlaying ? "Playing" : "Paused"; // TODO Maybe add play and pause symbols?
+        StatusText.Text = isPlaying ? "▶︎ Playing" : "⏸ Paused";
     }
 }
