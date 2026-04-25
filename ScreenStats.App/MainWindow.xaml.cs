@@ -31,6 +31,8 @@ public partial class MainWindow : Window
         if (_config.Background.Enabled)
         {
             Background.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(_config.Background.Color);
+            Background.Padding = new Thickness(_config.Background.Padding);
+            Background.CornerRadius = new CornerRadius(_config.Background.CornerRadius);
         }
 
         Panel.Orientation = layout.Orientation?.ToLower() == "horizontal"

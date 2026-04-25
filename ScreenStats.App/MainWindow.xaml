@@ -14,9 +14,8 @@
         Loaded="MainWindow_OnLoaded"
         WindowStyle="None">
 
-    <Grid>
-        <Border x:Name="Background"></Border>
-        <StackPanel x:Name="Panel" Orientation="Vertical"></StackPanel>
-    </Grid>
+    <Border x:Name="Background">
+        <StackPanel x:Name="Panel" Orientation="Vertical"/>
+    </Border>
     
 </Window>
