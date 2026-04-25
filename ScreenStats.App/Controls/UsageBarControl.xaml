@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="ScreenStats.App.Controls.UsageBarControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Grid x:Name="Grid"
+          Height="6">
+
+        <Border Background="#22FFFFFF"
+                CornerRadius="2" />
+
+        <Border x:Name="Fill"
+                HorizontalAlignment="Left"
+                Background="LimeGreen"
+                CornerRadius="2" />
+
+    </Grid>
+</UserControl>

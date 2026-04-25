@@ -5,9 +5,17 @@ using ScreenStats.App.Controls;
 
 namespace ScreenStats.App.Widgets;
 
-public class RamWidget(string label, string fontFamily, double fontSize, double valueFontSize, string color, bool showBar)
+public class RamWidget(
+    string label,
+    string fontFamily,
+    double fontSize,
+    double valueFontSize,
+    string color,
+    bool showBar)
     : UpdateableWidget, INotifyPropertyChanged
 {
+    private RamWidgetControl _control;
+
     private readonly PerformanceCounter _ramCounter = new("Memory", "Available MBytes");
 
     private string _usageText = "";
@@ -49,11 +57,14 @@ public class RamWidget(string label, string fontFamily, double fontSize, double 
         var totalGb = totalMb / 1024f;
 
         UsageText = $"{usedGb:0.0} / {totalGb:0.0} GB";
-        // TODO: Fill bar
+
+        var usedPercent = (usedMb / totalMb) * 100;
+        _control.Update(usedPercent, Color);
     }
 
     public override UserControl GetControl()
     {
-        return new RamWidgetControl(this);
+        _control = new RamWidgetControl(this);
+        return _control;
     }
 }

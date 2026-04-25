@@ -5,11 +5,19 @@ using ScreenStats.App.Controls;
 
 namespace ScreenStats.App.Widgets;
 
-public class CpuWidget(string label, string fontFamily, double fontSize, double valueFontSize, string color, bool showBar)
+public class CpuWidget(
+    string label,
+    string fontFamily,
+    double fontSize,
+    double valueFontSize,
+    string color,
+    bool showBar)
     : UpdateableWidget, INotifyPropertyChanged
 {
+    private CpuWidgetControl _control;
+
     private readonly PerformanceCounter _cpuCounter = new("Processor", "% Processor Time", "_Total");
-    
+
     private float _usage;
 
     public string Label { get; set; } = label;
@@ -39,10 +47,12 @@ public class CpuWidget(string label, string fontFamily, double fontSize, double 
     public override void Update()
     {
         Usage = (float)Math.Round(_cpuCounter.NextValue(), 1);
+        _control.Update(Usage, Color);
     }
 
     public override UserControl GetControl()
     {
-        return new CpuWidgetControl(this);
+        _control = new CpuWidgetControl(this);
+        return _control;
     }
 }
