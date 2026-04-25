@@ -35,7 +35,7 @@ public static class WidgetHelper
 
             if (config is MediaWidgetConfig mediaConfig)
             {
-                widgets.Add(new MediaWidget());
+                widgets.Add(new MediaWidget(mediaConfig.ShowArtist,  mediaConfig.ShowStatus, mediaConfig.ShowThumbnail));
             }
         }
 

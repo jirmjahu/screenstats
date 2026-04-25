@@ -69,8 +69,16 @@ public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
         }
     }
 
-    public MediaWidget()
+    public bool ShowArtist { get; }
+    public bool ShowStatus { get; }
+    public bool ShowThumbnail { get; }
+
+    public MediaWidget(bool showArtist, bool showStatus, bool showThumbnail)
     {
+        ShowArtist = showArtist;
+        ShowStatus = showStatus;
+        ShowThumbnail = showThumbnail;
+
         Init();
     }
 
