@@ -49,6 +49,12 @@ public partial class MainWindow : Window
             Background.Padding = new Thickness(_config.Background.Padding);
             Background.CornerRadius = new CornerRadius(_config.Background.CornerRadius);
         }
+        else
+        {
+            Background.Background = Brushes.Transparent;
+            Background.Padding = new Thickness(0);
+            Background.CornerRadius = new CornerRadius(0);
+        }
 
         Panel.Orientation = layout.Orientation?.ToLower() == "horizontal"
             ? Orientation.Horizontal
