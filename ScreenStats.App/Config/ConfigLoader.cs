@@ -9,7 +9,7 @@ public static class ConfigLoader
     {
         var config = new ConfigurationBuilder()
             .SetBasePath(basePath)
-            .AddIniFile(path, optional: false, reloadOnChange: true)
+            .AddIniFile(path, optional: false)
             .Build();
 
         var appConfig = new AppConfig();

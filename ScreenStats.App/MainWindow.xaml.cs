@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -12,7 +13,11 @@ namespace ScreenStats.App;
 
 public partial class MainWindow : Window
 {
-    private readonly AppConfig _config;
+    private static readonly string BasePath = AppDomain.CurrentDomain.BaseDirectory;
+    private const string ConfigPath = "config.ini";
+
+    private AppConfig _config;
+    private readonly ConfigWatcher _configWatcher;
     private readonly List<Widget> _widgets;
     private readonly DispatcherTimer _updateTimer;
 
@@ -20,14 +25,24 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        _config = ConfigLoader.Load("/", "config.ini");
+        _config = ConfigLoader.Load(BasePath, ConfigPath);
+        _configWatcher = new ConfigWatcher(Path.Combine(BasePath, ConfigPath), ReloadConfig);
         _widgets = WidgetHelper.CreateWidgetsFromConfig(_config);
-        
+
+        ApplyConfig();
+        RenderWidgets();
+
+        _updateTimer = CreateUpdateTimer();
+        _updateTimer.Start();
+    }
+
+    private void ApplyConfig()
+    {
         var layout = _config.Layout;
-        
+
         Width = layout.Width;
         Left = layout.Left;
-        
+
         if (_config.Background.Enabled)
         {
             Background.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(_config.Background.Color);
@@ -39,14 +54,29 @@ public partial class MainWindow : Window
             ? Orientation.Horizontal
             : Orientation.Vertical;
 
-        Panel.Children.Clear();
-        
-        WidgetRenderer.Render(Panel, _config.Layout, _widgets);
-
-        _updateTimer = CreateUpdateTimer();
-        _updateTimer.Start();
+        UpdateWindowPosition();
     }
-    
+
+    private void ReloadConfig()
+    {
+        Dispatcher.Invoke(() =>
+        {
+            _config = ConfigLoader.Load(BasePath, ConfigPath);
+
+            _widgets.Clear();
+            _widgets.AddRange(WidgetHelper.CreateWidgetsFromConfig(_config));
+
+            ApplyConfig();
+            RenderWidgets();
+        });
+    }
+
+    private void RenderWidgets()
+    {
+        Panel.Children.Clear();
+        WidgetRenderer.Render(Panel, _config.Layout, _widgets);
+    }
+
     protected override void OnContentRendered(EventArgs e)
     {
         base.OnContentRendered(e);
@@ -57,7 +87,7 @@ public partial class MainWindow : Window
     {
         UpdateWindowPosition();
     }
-    
+
     protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
     {
         base.OnRenderSizeChanged(sizeInfo);
@@ -74,7 +104,7 @@ public partial class MainWindow : Window
         timer.Tick += (_, _) => UpdateWidgets();
         return timer;
     }
-    
+
     private void UpdateWidgets()
     {
         foreach (var widget in _widgets)
