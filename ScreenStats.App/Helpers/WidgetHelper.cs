@@ -23,13 +23,13 @@ public static class WidgetHelper
 
             if (config is CpuWidgetConfig cpuConfig)
             {
-                widgets.Add(new CpuWidget(cpuConfig.Label, cpuConfig.FontFamily, cpuConfig.Size,
+                widgets.Add(new CpuWidget(cpuConfig.Content, cpuConfig.FontFamily, cpuConfig.Size,
                     cpuConfig.ValueSize, cpuConfig.Color, cpuConfig.ShowBar));
             }
 
             if (config is RamWidgetConfig ramConfig)
             {
-                widgets.Add(new RamWidget(ramConfig.Label, ramConfig.FontFamily, ramConfig.Size,
+                widgets.Add(new RamWidget(ramConfig.Content, ramConfig.FontFamily, ramConfig.Size,
                     ramConfig.ValueSize, ramConfig.Color, ramConfig.ShowBar));
             }
 
@@ -41,12 +41,9 @@ public static class WidgetHelper
             if (config is DriveUsageConfig driveUsageConfig)
             {
                 widgets.Add(new DriveUsageWidget(driveUsageConfig.Drive, driveUsageConfig.Content,
-                    driveUsageConfig.FontFamily, driveUsageConfig.Size,
+                    driveUsageConfig.FontFamily, driveUsageConfig.Size, driveUsageConfig.ValueSize,
                     driveUsageConfig.Color, driveUsageConfig.ShowBar));
             }
-            
-            
-            
         }
 
         return widgets;

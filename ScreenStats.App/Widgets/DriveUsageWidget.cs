@@ -11,6 +11,7 @@ public class DriveUsageWidget(
     string content,
     string fontFamily,
     double size,
+    double valueSize,
     string color,
     bool showBar)
     : UpdateableWidget, INotifyPropertyChanged
@@ -20,6 +21,7 @@ public class DriveUsageWidget(
 
     public string FontFamily { get; set; } = fontFamily;
     public double Size { get; set; } = size;
+    public double ValueSize { get; set; } = valueSize;
     public string Color { get; set; } = color;
     public bool ShowBar { get; set; } = showBar;
 

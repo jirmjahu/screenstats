@@ -6,7 +6,7 @@ using ScreenStats.App.Controls;
 namespace ScreenStats.App.Widgets;
 
 public class CpuWidget(
-    string label,
+    string content,
     string fontFamily,
     double size,
     double valueSize,
@@ -18,7 +18,7 @@ public class CpuWidget(
 
     private float _usage;
 
-    public string Label { get; set; } = label;
+    public string Content { get; set; } = content;
     public string FontFamily { get; set; } = fontFamily;
     public double Size { get; set; } = size;
     public double ValueSize { get; set; } = valueSize;
