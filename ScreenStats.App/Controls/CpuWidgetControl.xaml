@@ -9,7 +9,7 @@
 
     <Grid Margin="0, 0, 0, 10">
         <StackPanel>
-            <TextBlock Text="{Binding Label}"
+            <TextBlock Text="{Binding Content}"
                        FontFamily="{Binding FontFamily}"
                        FontSize="{Binding Size}"
                        Foreground="White" />
