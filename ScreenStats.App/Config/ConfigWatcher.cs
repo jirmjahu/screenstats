@@ -11,7 +11,12 @@ public class ConfigWatcher
         var directory = Path.GetDirectoryName(filePath);
         var fileName = Path.GetFileName(filePath);
 
-        _watcher = new FileSystemWatcher(directory ?? string.Empty)
+        if (directory == null || fileName == null)
+        {
+            throw new ArgumentException("Invalid file path");
+        }
+
+        _watcher = new FileSystemWatcher(directory)
         {
             Filter = fileName,
             EnableRaisingEvents = true,
