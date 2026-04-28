@@ -17,4 +17,8 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.Ini" Version="10.0.6" />
     </ItemGroup>
 
+    <ItemGroup>
+        <EmbeddedResource Include="Assets\config.ini" />
+    </ItemGroup>
+
 </Project>

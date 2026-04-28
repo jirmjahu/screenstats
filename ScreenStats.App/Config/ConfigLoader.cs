@@ -1,14 +1,20 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.IO;
+using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using ScreenStats.App.Config.Models;
 
 namespace ScreenStats.App.Config;
 
 public static class ConfigLoader
 {
-    public static AppConfig Load(string basePath, string path)
+    public static AppConfig Load(string path)
     {
+        if (!File.Exists(path))
+        {
+            CreateDefaultConfig(path);
+        }
+
         var config = new ConfigurationBuilder()
-            .SetBasePath(basePath)
             .AddIniFile(path, optional: false)
             .Build();
 
@@ -56,5 +62,30 @@ public static class ConfigLoader
         }
 
         return appConfig;
+    }
+
+    private static void CreateDefaultConfig(string path)
+    {
+        var directory = Path.GetDirectoryName(path);
+
+        if (!string.IsNullOrWhiteSpace(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
+        var defaultConfigContent = LoadDefaultConfig();
+        File.WriteAllText(path, defaultConfigContent);
+    }
+
+    private static string LoadDefaultConfig()
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        var resourceName = "ScreenStats.App.Assets.config.ini";
+
+        using var stream = assembly.GetManifestResourceStream(resourceName) ??
+                           throw new FileNotFoundException("Default config not found in assembly.");
+
+        using var reader = new StreamReader(stream);
+        return reader.ReadToEnd();
     }
 }

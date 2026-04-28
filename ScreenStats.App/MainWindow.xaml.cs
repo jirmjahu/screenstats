@@ -13,9 +13,6 @@ namespace ScreenStats.App;
 
 public partial class MainWindow : Window
 {
-    private static readonly string BasePath = AppDomain.CurrentDomain.BaseDirectory;
-    private const string ConfigPath = "config.ini";
-
     private AppConfig _config;
     private readonly ConfigWatcher _configWatcher;
     private readonly List<Widget> _widgets;
@@ -25,8 +22,8 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        _config = ConfigLoader.Load(BasePath, ConfigPath);
-        _configWatcher = new ConfigWatcher(Path.Combine(BasePath, ConfigPath), ReloadConfig);
+        _config = ConfigLoader.Load(AppPaths.ConfigFile);
+        _configWatcher = new ConfigWatcher(AppPaths.ConfigFile, ReloadConfig);
         _widgets = WidgetHelper.CreateWidgetsFromConfig(_config);
 
         ApplyConfig();
@@ -67,7 +64,7 @@ public partial class MainWindow : Window
     {
         Dispatcher.Invoke(() =>
         {
-            _config = ConfigLoader.Load(BasePath, ConfigPath);
+            _config = ConfigLoader.Load(AppPaths.ConfigFile);
 
             _widgets.Clear();
             _widgets.AddRange(WidgetHelper.CreateWidgetsFromConfig(_config));
