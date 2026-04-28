@@ -35,8 +35,18 @@ public static class WidgetHelper
 
             if (config is MediaWidgetConfig mediaConfig)
             {
-                widgets.Add(new MediaWidget(mediaConfig.ShowArtist,  mediaConfig.ShowStatus, mediaConfig.ShowThumbnail));
+                widgets.Add(new MediaWidget(mediaConfig.ShowArtist, mediaConfig.ShowStatus, mediaConfig.ShowThumbnail));
             }
+
+            if (config is DriveUsageConfig driveUsageConfig)
+            {
+                widgets.Add(new DriveUsageWidget(driveUsageConfig.Drive, driveUsageConfig.Content,
+                    driveUsageConfig.FontFamily, driveUsageConfig.FontSize,
+                    driveUsageConfig.Color, driveUsageConfig.ShowBar));
+            }
+            
+            
+            
         }
 
         return widgets;

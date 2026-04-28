@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Controls;
 using ScreenStats.App.Controls;
+using ScreenStats.App.Helpers;
 
 namespace ScreenStats.App.Widgets;
 
@@ -55,14 +56,15 @@ public class RamWidget(
         // Source: https://stackoverflow.com/a/59073095
         var memoryInfo = GC.GetGCMemoryInfo();
         var installedMemory = memoryInfo.TotalAvailableMemoryBytes;
-        var totalMb = installedMemory / 1048576.0;
-
+        
+        var totalMb = MemoryConverter.ToMb(installedMemory);
         var availableMb = _ramCounter.NextValue();
         var usedMb = totalMb - availableMb;
-        var usedGb = usedMb / 1024f;
-        var totalGb = totalMb / 1024f;
+        
+        var usedGb = MemoryConverter.ToGbString(usedMb);
+        var totalGb = MemoryConverter.ToGbString(totalMb);
 
-        UsageText = $"{usedGb:0.0} / {totalGb:0.0} GB";
+        UsageText = $"{usedGb} / {totalGb} GB";
         Usage = (usedMb / totalMb) * 100;
     }
 

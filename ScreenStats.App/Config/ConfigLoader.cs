@@ -42,7 +42,11 @@ public static class ConfigLoader
             }
             else if (type == "media")
             {
-                widget = section.Get<MediaWidgetConfig>();           
+                widget = section.Get<MediaWidgetConfig>();
+            }
+            else if (type == "drive")
+            {
+                widget = section.Get<DriveUsageConfig>();
             }
 
             if (widget != null)
