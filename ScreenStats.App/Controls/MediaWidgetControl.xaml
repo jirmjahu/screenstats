@@ -15,26 +15,30 @@
         <Image Source="{Binding Thumbnail}"
                VerticalAlignment="Center"
                HorizontalAlignment="Center"
-               Width="50"
+               Width="{Binding ThumbnailSize}"
+               Height="{Binding ThumbnailSize}"
                Margin="0, 0, 10, 0"
                Visibility="{Binding ShowThumbnail, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <StackPanel Grid.Column="1"
                     VerticalAlignment="Center">
 
-            <TextBlock Text="{Binding Title}"
-                       FontSize="18"
+            <TextBlock Text="{Binding DisplayText}"
+                       FontFamily="{Binding FontFamily}"
+                       FontSize="{Binding Size}"
                        FontWeight="Bold"
-                       Foreground="White" />
+                       Foreground="{Binding Color}" />
 
             <TextBlock Text="{Binding Artist}"
-                       FontSize="12"
-                       Foreground="#E4E3E9"
+                       FontFamily="{Binding FontFamily}"
+                       FontSize="{Binding Size}"
+                       Foreground="{Binding Color}"
                        Visibility="{Binding ShowArtist, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
             <TextBlock Text="{Binding StatusText}"
-                       FontSize="12"
-                       Foreground="#E4E3E9"
+                       FontFamily="{Binding FontFamily}"
+                       FontSize="{Binding Size}"
+                       Foreground="{Binding Color}"
                        Visibility="{Binding ShowStatus, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         </StackPanel>

@@ -9,27 +9,25 @@ namespace ScreenStats.App.Widgets;
 
 public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
 {
-    private MediaWidgetControl? _control;
-
     private GlobalSystemMediaTransportControlsSessionManager? _manager;
     private GlobalSystemMediaTransportControlsSession? _session;
 
-    private string _title;
+    private string _displayText;
     private string _artist;
     private string _statusText;
     private BitmapImage? _thumbnail;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public string Title
+    public string DisplayText
     {
-        get => _title;
+        get => _displayText;
         set
         {
-            if (_title == value) return;
+            if (_displayText == value) return;
 
-            _title = value;
-            PropertyChanged?.Invoke(this, new(nameof(Title)));
+            _displayText = value;
+            PropertyChanged?.Invoke(this, new(nameof(DisplayText)));
         }
     }
 
@@ -69,15 +67,26 @@ public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
         }
     }
 
+    private string Content { get; }
+    public string Color { get; }
+    public string FontFamily { get; }
+    public double Size { get; }
     public bool ShowArtist { get; }
     public bool ShowStatus { get; }
     public bool ShowThumbnail { get; }
+    public double ThumbnailSize { get; }
 
-    public MediaWidget(bool showArtist, bool showStatus, bool showThumbnail)
+    public MediaWidget(string content, string color, string fontFamily, double size, bool showArtist, bool showStatus,
+        bool showThumbnail, double thumbnailSize)
     {
+        Content = content;
+        Color = color;
+        FontFamily = fontFamily;
+        Size = size;
         ShowArtist = showArtist;
         ShowStatus = showStatus;
         ShowThumbnail = showThumbnail;
+        ThumbnailSize = thumbnailSize;
 
         Init();
     }
@@ -102,19 +111,34 @@ public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
 
         var media = await _session.TryGetMediaPropertiesAsync();
         var playback = _session.GetPlaybackInfo();
+        var timeline = _session.GetTimelineProperties();
 
-        Title = media.Title ?? "Unknown";
-        Artist = media.Artist ?? "Unknown";
+        var title = media.Title ?? "Unknown Title";
+        var artist = media.Artist ?? "Unknown Artist";
 
         var isPlaying = playback.PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
-        StatusText = isPlaying ? "▶︎ Playing" : "⏸ Paused";
+        var status = isPlaying ? "▶︎ Playing" : "⏸ Paused";
 
+        Artist = artist;
+        StatusText = status;
         Thumbnail = ThumbnailHelper.GetThumbnail(media.Thumbnail);
+
+        var position = $"{timeline.Position:mm\\:ss}";
+        var duration = $"{timeline.EndTime:mm\\:ss}";
+
+        var app = _session.SourceAppUserModelId ?? "Unknown App";
+
+        DisplayText = Content
+            .Replace("{title}", title)
+            .Replace("{artist}", artist)
+            .Replace("{status}", status)
+            .Replace("{app}", app)
+            .Replace("{position}", position)
+            .Replace("{duration}", duration);
     }
 
     public override UserControl GetControl()
     {
-        _control = new MediaWidgetControl(this);
-        return _control;
+        return new MediaWidgetControl(this);
     }
 }

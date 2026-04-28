@@ -4,5 +4,5 @@ public class WidgetConfig
 {
     public string Type { get; set; }
     public string FontFamily { get; set; }
-    public int Size { get; set; }
+    public double Size { get; set; }
 }
