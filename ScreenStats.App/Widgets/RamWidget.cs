@@ -55,16 +55,16 @@ public class RamWidget(
     {
         // Source: https://stackoverflow.com/a/59073095
         var memoryInfo = GC.GetGCMemoryInfo();
-        var installedMemory = memoryInfo.TotalAvailableMemoryBytes;
+        var totalBytes = memoryInfo.TotalAvailableMemoryBytes;
         
-        var totalMb = MemoryConverter.ToMb(installedMemory);
+        var totalMb = MemoryConverter.ToMb(totalBytes);
         var availableMb = _ramCounter.NextValue();
         var usedMb = totalMb - availableMb;
         
-        var usedGb = MemoryConverter.ToGbString(usedMb);
-        var totalGb = MemoryConverter.ToGbString(totalMb);
+        var usedGb = MemoryConverter.ToGbString(usedMb * 1024 * 1024);
+        var totalGb = MemoryConverter.ToGbString(totalBytes);
 
-        UsageText = $"{usedGb} / {totalGb} GB";
+        UsageText = $"{usedGb} / {totalGb}";
         Usage = (usedMb / totalMb) * 100;
     }
 
