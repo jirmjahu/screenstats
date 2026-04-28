@@ -4,7 +4,7 @@
 
     <TextBlock Text="{Binding Content}"
                FontFamily="{Binding FontFamily}"
-               FontSize="{Binding FontSize}"
+               FontSize="{Binding Size}"
                Foreground="White" />
 
 </UserControl>

@@ -2,6 +2,5 @@
 
 public class TextWidgetConfig : WidgetConfig
 {
-    public string Content  { get; set; }
-    public double FontSize  { get; set; }
+    public string Content { get; set; }
 }

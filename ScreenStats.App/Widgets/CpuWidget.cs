@@ -8,8 +8,8 @@ namespace ScreenStats.App.Widgets;
 public class CpuWidget(
     string label,
     string fontFamily,
-    double fontSize,
-    double valueFontSize,
+    double size,
+    double valueSize,
     string color,
     bool showBar)
     : UpdateableWidget, INotifyPropertyChanged
@@ -20,8 +20,8 @@ public class CpuWidget(
 
     public string Label { get; set; } = label;
     public string FontFamily { get; set; } = fontFamily;
-    public double FontSize { get; set; } = fontSize;
-    public double ValueFontSize { get; set; } = valueFontSize;
+    public double Size { get; set; } = size;
+    public double ValueSize { get; set; } = valueSize;
     public string Color { get; set; } = color;
     public bool ShowBar { get; set; } = showBar;
 

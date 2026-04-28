@@ -11,12 +11,12 @@
         <StackPanel>
             <TextBlock Text="{Binding DisplayText}"
                        FontFamily="{Binding FontFamily}"
-                       FontSize="{Binding FontSize}"
+                       FontSize="{Binding Size}"
                        Foreground="White" />
 
             <TextBlock Text="{Binding Usage, StringFormat={}{0}%}"
                        FontFamily="{Binding FontFamily}"
-                       FontSize="{Binding FontSize}"
+                       FontSize="{Binding Size}"
                        FontWeight="Bold"
                        Foreground="{Binding Color}" />
 

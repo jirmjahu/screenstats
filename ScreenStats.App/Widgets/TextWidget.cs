@@ -3,11 +3,11 @@ using ScreenStats.App.Controls;
 
 namespace ScreenStats.App.Widgets;
 
-public class TextWidget(string content, string fontFamily, double fontSize) : Widget
+public class TextWidget(string content, string fontFamily, double size) : Widget
 {
     public string Content { get; set; } = content;
     public string FontFamily { get; set; } = fontFamily;
-    public double FontSize { get; set; } = fontSize;
+    public double Size { get; set; } = size;
 
     public override UserControl GetControl()
     {
