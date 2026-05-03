@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Windows.Media.Control;
+using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
 using ScreenStats.App.Helpers;
 
@@ -12,83 +13,62 @@ public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
     private GlobalSystemMediaTransportControlsSessionManager? _manager;
     private GlobalSystemMediaTransportControlsSession? _session;
 
-    private string _displayText;
-    private string _artist;
-    private string _statusText;
-    private BitmapImage? _thumbnail;
+    public MediaWidgetConfig Config { get; }
+
+    public MediaWidget(MediaWidgetConfig config)
+    {
+        Config = config;
+        Init();
+    }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public string DisplayText
     {
-        get => _displayText;
+        get;
         set
         {
-            if (_displayText == value) return;
+            if (field == value) return;
 
-            _displayText = value;
+            field = value;
             PropertyChanged?.Invoke(this, new(nameof(DisplayText)));
         }
     }
 
     public string Artist
     {
-        get => _artist;
+        get;
         set
         {
-            if (_artist == value) return;
+            if (field == value) return;
 
-            _artist = value;
+            field = value;
             PropertyChanged?.Invoke(this, new(nameof(Artist)));
         }
     }
 
     public string StatusText
     {
-        get => _statusText;
+        get;
         set
         {
-            if (_statusText == value) return;
+            if (field == value) return;
 
-            _statusText = value;
+            field = value;
             PropertyChanged?.Invoke(this, new(nameof(StatusText)));
         }
     }
 
     public BitmapImage? Thumbnail
     {
-        get => _thumbnail;
+        get;
         set
         {
-            if (_thumbnail == value) return;
+            if (field == value) return;
 
-            _thumbnail = value;
+            field = value;
             PropertyChanged?.Invoke(this, new(nameof(Thumbnail)));
         }
-    }
-
-    private string Content { get; }
-    public string Color { get; }
-    public string FontFamily { get; }
-    public double Size { get; }
-    public bool ShowArtist { get; }
-    public bool ShowStatus { get; }
-    public bool ShowThumbnail { get; }
-    public double ThumbnailSize { get; }
-
-    public MediaWidget(string content, string color, string fontFamily, double size, bool showArtist, bool showStatus,
-        bool showThumbnail, double thumbnailSize)
-    {
-        Content = content;
-        Color = color;
-        FontFamily = fontFamily;
-        Size = size;
-        ShowArtist = showArtist;
-        ShowStatus = showStatus;
-        ShowThumbnail = showThumbnail;
-        ThumbnailSize = thumbnailSize;
-
-        Init();
     }
 
     private async void Init()
@@ -128,7 +108,12 @@ public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
 
         var app = _session.SourceAppUserModelId ?? "Unknown App";
 
-        DisplayText = Content
+        if (Config.Content == null)
+        {
+            return;
+        }
+        
+        DisplayText = Config.Content
             .Replace("{title}", title)
             .Replace("{artist}", artist)
             .Replace("{status}", status)

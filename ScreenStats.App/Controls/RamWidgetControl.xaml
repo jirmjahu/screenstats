@@ -9,22 +9,22 @@
 
     <Grid Margin="0, 0, 0, 10">
         <StackPanel>
-            <TextBlock Text="{Binding Content}"
-                       FontFamily="{Binding FontFamily}"
-                       FontSize="{Binding Size}"
+            <TextBlock Text="{Binding Config.Content}"
+                       FontFamily="{Binding Config.FontFamily}"
+                       FontSize="{Binding Config.Size}"
                        Foreground="White" />
 
             <TextBlock Text="{Binding UsageText}"
-                       FontFamily="{Binding FontFamily}"
-                       FontSize="{Binding ValueSize}"
+                       FontFamily="{Binding Config.FontFamily}"
+                       FontSize="{Binding Config.ValueSize}"
                        FontWeight="Bold"
-                       Foreground="{Binding Color}" />
+                       Foreground="{Binding Config.Color}" />
 
             <controls:UsageBarControl
                 Value="{Binding Usage}"
-                BarColor="{Binding Color}"
+                BarColor="{Binding Config.Color}"
                 Margin="0,5,0,0"
-                Visibility="{Binding ShowBar, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                Visibility="{Binding Config.ShowBar, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         </StackPanel>
     </Grid>

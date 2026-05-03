@@ -1,13 +1,12 @@
 ﻿using System.Windows.Controls;
+using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
 
 namespace ScreenStats.App.Widgets;
 
-public class TextWidget(string content, string fontFamily, double size) : Widget
+public class TextWidget(TextWidgetConfig config) : Widget
 {
-    public string Content { get; set; } = content;
-    public string FontFamily { get; set; } = fontFamily;
-    public double Size { get; set; } = size;
+    public TextWidgetConfig Config { get; } = config;
 
     public override UserControl GetControl()
     {

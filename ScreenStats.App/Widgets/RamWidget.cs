@@ -1,52 +1,38 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Controls;
+using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
 using ScreenStats.App.Helpers;
 
 namespace ScreenStats.App.Widgets;
 
-public class RamWidget(
-    string content,
-    string fontFamily,
-    double size,
-    double valueSize,
-    string color,
-    bool showBar)
-    : UpdateableWidget, INotifyPropertyChanged
+public class RamWidget(RamWidgetConfig config) : UpdateableWidget, INotifyPropertyChanged
 {
     private readonly PerformanceCounter _ramCounter = new("Memory", "Available MBytes");
 
-    private string _usageText = "";
-    private double _usage;
-
-    public string Content { get; set; } = content;
-    public string FontFamily { get; set; } = fontFamily;
-    public double Size { get; set; } = size;
-    public double ValueSize { get; set; } = valueSize;
-    public string Color { get; set; } = color;
-    public bool ShowBar { get; set; } = showBar;
+    public RamWidgetConfig Config { get; } = config;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public string UsageText
     {
-        get => _usageText;
+        get;
         set
         {
-            if (_usageText == value) return;
+            if (field == value) return;
 
-            _usageText = value;
+            field = value;
             PropertyChanged?.Invoke(this, new(nameof(UsageText)));
         }
-    }
+    } = "";
 
     public double Usage
     {
-        get => _usage;
+        get;
         set
         {
-            _usage = value;
+            field = value;
             PropertyChanged?.Invoke(this, new(nameof(Usage)));
         }
     }
@@ -56,11 +42,11 @@ public class RamWidget(
         // Source: https://stackoverflow.com/a/59073095
         var memoryInfo = GC.GetGCMemoryInfo();
         var totalBytes = memoryInfo.TotalAvailableMemoryBytes;
-        
+
         var totalMb = MemoryConverter.ToMb(totalBytes);
         var availableMb = _ramCounter.NextValue();
         var usedMb = totalMb - availableMb;
-        
+
         var usedGb = MemoryConverter.ToGbString(usedMb * 1024 * 1024);
         var totalGb = MemoryConverter.ToGbString(totalBytes);
 

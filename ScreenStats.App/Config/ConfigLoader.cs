@@ -23,6 +23,11 @@ public static class ConfigLoader
         config.GetSection("background").Bind(appConfig.Background);
         config.GetSection("layout").Bind(appConfig.Layout);
 
+        foreach (var section in config.GetSection("defaults").GetChildren())
+        {
+            appConfig.Defaults[section.Key.ToLower()] = section.Value ?? string.Empty;
+        }
+        
         foreach (var section in config.GetSection("widgets").GetChildren())
         {
             if (!int.TryParse(section.Key, out var index))

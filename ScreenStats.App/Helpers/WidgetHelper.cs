@@ -16,38 +16,48 @@ public static class WidgetHelper
 
         foreach (var config in appConfig.Widgets.Values)
         {
-            if (config is TextWidgetConfig textConfig)
+            ApplyDefaults(config, appConfig.Defaults);
+            
+            switch (config)
             {
-                widgets.Add(new TextWidget(textConfig.Content, textConfig.FontFamily, textConfig.Size));
-            }
-
-            if (config is CpuWidgetConfig cpuConfig)
-            {
-                widgets.Add(new CpuWidget(cpuConfig.Content, cpuConfig.FontFamily, cpuConfig.Size,
-                    cpuConfig.ValueSize, cpuConfig.Color, cpuConfig.ShowBar));
-            }
-
-            if (config is RamWidgetConfig ramConfig)
-            {
-                widgets.Add(new RamWidget(ramConfig.Content, ramConfig.FontFamily, ramConfig.Size,
-                    ramConfig.ValueSize, ramConfig.Color, ramConfig.ShowBar));
-            }
-
-            if (config is MediaWidgetConfig mediaConfig)
-            {
-                widgets.Add(new MediaWidget(mediaConfig.Content, mediaConfig.Color, mediaConfig.FontFamily, mediaConfig.Size,
-                    mediaConfig.ShowArtist, mediaConfig.ShowStatus, mediaConfig.ShowThumbnail,
-                    mediaConfig.ThumbnailSize));
-            }
-
-            if (config is DriveUsageConfig driveUsageConfig)
-            {
-                widgets.Add(new DriveUsageWidget(driveUsageConfig.Drive, driveUsageConfig.Content,
-                    driveUsageConfig.FontFamily, driveUsageConfig.Size, driveUsageConfig.ValueSize,
-                    driveUsageConfig.Color, driveUsageConfig.ShowBar));
+                case TextWidgetConfig textConfig:
+                    widgets.Add(new TextWidget(textConfig));
+                    break;
+                case CpuWidgetConfig cpuConfig:
+                    widgets.Add(new CpuWidget(cpuConfig));
+                    break;
+                case RamWidgetConfig ramConfig:
+                    widgets.Add(new RamWidget(ramConfig));
+                    break;
+                case MediaWidgetConfig mediaConfig:
+                    widgets.Add(new MediaWidget(mediaConfig));
+                    break;
+                case DriveUsageConfig driveUsageConfig:
+                    widgets.Add(new DriveUsageWidget(driveUsageConfig));
+                    break;
             }
         }
 
         return widgets;
+    }
+
+    private static void ApplyDefaults(WidgetConfig config, Dictionary<string, string> defaults)
+    {
+        foreach (var property in config.GetType().GetProperties().Where(p => p.CanWrite))
+        {
+            if (property.GetValue(config) != null)
+            {
+                continue;
+            }
+
+            if (!defaults.TryGetValue(property.Name.ToLower(), out var defaultValue))
+            {
+                continue;
+            }
+
+            var targetType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+            var converted = Convert.ChangeType(defaultValue, targetType);
+            property.SetValue(config, converted);
+        }
     }
 }

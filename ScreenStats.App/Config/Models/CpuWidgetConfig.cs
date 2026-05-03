@@ -2,8 +2,8 @@
 
 public class CpuWidgetConfig : WidgetConfig
 {
-    public string Content { get; set; }
-    public double ValueSize { get; set; }
-    public string Color { get; set; }
-    public bool ShowBar { get; set; }
+    public string? Content { get; set; }
+    public double? ValueSize { get; set; }
+    public string? Color { get; set; }
+    public bool? ShowBar { get; set; }
 }

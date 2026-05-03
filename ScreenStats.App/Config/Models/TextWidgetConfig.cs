@@ -2,5 +2,5 @@
 
 public class TextWidgetConfig : WidgetConfig
 {
-    public string Content { get; set; }
+    public string? Content { get; set; }
 }

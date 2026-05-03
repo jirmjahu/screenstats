@@ -1,38 +1,25 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Controls;
+using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
 
 namespace ScreenStats.App.Widgets;
 
-public class CpuWidget(
-    string content,
-    string fontFamily,
-    double size,
-    double valueSize,
-    string color,
-    bool showBar)
-    : UpdateableWidget, INotifyPropertyChanged
+public class CpuWidget(CpuWidgetConfig config) : UpdateableWidget, INotifyPropertyChanged
 {
+    public CpuWidgetConfig Config { get; } = config;
+    
     private readonly PerformanceCounter _cpuCounter = new("Processor", "% Processor Time", "_Total");
-
-    private float _usage;
-
-    public string Content { get; set; } = content;
-    public string FontFamily { get; set; } = fontFamily;
-    public double Size { get; set; } = size;
-    public double ValueSize { get; set; } = valueSize;
-    public string Color { get; set; } = color;
-    public bool ShowBar { get; set; } = showBar;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public float Usage
     {
-        get => _usage;
+        get;
         set
         {
-            _usage = value;
+            field = value;
             PropertyChanged?.Invoke(this, new(nameof(Usage)));
         }
     }

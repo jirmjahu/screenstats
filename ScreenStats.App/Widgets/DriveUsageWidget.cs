@@ -1,55 +1,41 @@
 ﻿using System.ComponentModel;
 using System.IO;
 using System.Windows.Controls;
+using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
 using ScreenStats.App.Helpers;
 
 namespace ScreenStats.App.Widgets;
 
-public class DriveUsageWidget(
-    string drive,
-    string content,
-    string fontFamily,
-    double size,
-    double valueSize,
-    string color,
-    bool showBar)
-    : UpdateableWidget, INotifyPropertyChanged
+public class DriveUsageWidget(DriveUsageConfig config) : UpdateableWidget, INotifyPropertyChanged
 {
-    private float _usage;
-    private string _displayText;
-
-    public string FontFamily { get; set; } = fontFamily;
-    public double Size { get; set; } = size;
-    public double ValueSize { get; set; } = valueSize;
-    public string Color { get; set; } = color;
-    public bool ShowBar { get; set; } = showBar;
-
+    public DriveUsageConfig Config { get; } = config;
+    
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public float Usage
     {
-        get => _usage;
+        get;
         set
         {
-            _usage = value;
+            field = value;
             PropertyChanged?.Invoke(this, new(nameof(Usage)));
         }
     }
 
-    public string DisplayText
+    public string? DisplayText
     {
-        get => _displayText;
+        get;
         set
         {
-            _displayText = value;
+            field = value;
             PropertyChanged?.Invoke(this, new(nameof(DisplayText)));
         }
     }
 
     public override void Update()
     {
-        var info = new DriveInfo(drive);
+        var info = new DriveInfo(Config.Drive!);
 
         double total = info.TotalSize;
         double free = info.AvailableFreeSpace;
@@ -61,15 +47,15 @@ public class DriveUsageWidget(
         var usedGb = MemoryConverter.ToGbString(used);
         var totalGb = MemoryConverter.ToGbString(total);
         var freeGb = MemoryConverter.ToGbString(free);
-        
+
         var label = info.VolumeLabel;
         if (string.IsNullOrWhiteSpace(label))
         {
             label = "Local Disk";
         }
 
-        DisplayText = content.Replace("\\n", Environment.NewLine)
-            .Replace("{letter}", drive)
+        DisplayText = Config.Content!.Replace("\\n", Environment.NewLine)
+            .Replace("{letter}", Config.Drive)
             .Replace("{label}", label)
             .Replace("{percent}", usedPercentage.ToString("0"))
             .Replace("{used}", usedGb)

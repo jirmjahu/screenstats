@@ -15,31 +15,31 @@
         <Image Source="{Binding Thumbnail}"
                VerticalAlignment="Center"
                HorizontalAlignment="Center"
-               Width="{Binding ThumbnailSize}"
-               Height="{Binding ThumbnailSize}"
+               Width="{Binding Config.ThumbnailSize}"
+               Height="{Binding Config.ThumbnailSize}"
                Margin="0, 0, 10, 0"
-               Visibility="{Binding ShowThumbnail, Converter={StaticResource BooleanToVisibilityConverter}}" />
+               Visibility="{Binding Config.ShowThumbnail, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <StackPanel Grid.Column="1"
                     VerticalAlignment="Center">
 
             <TextBlock Text="{Binding DisplayText}"
-                       FontFamily="{Binding FontFamily}"
-                       FontSize="{Binding Size}"
+                       FontFamily="{Binding Config.FontFamily}"
+                       FontSize="{Binding Config.Size}"
                        FontWeight="Bold"
-                       Foreground="{Binding Color}" />
+                       Foreground="{Binding Config.Color}" />
 
             <TextBlock Text="{Binding Artist}"
-                       FontFamily="{Binding FontFamily}"
-                       FontSize="{Binding Size}"
-                       Foreground="{Binding Color}"
-                       Visibility="{Binding ShowArtist, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                       FontFamily="{Binding Config.FontFamily}"
+                       FontSize="{Binding Config.Size}"
+                       Foreground="{Binding Config.Color}"
+                       Visibility="{Binding Config.ShowArtist, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
             <TextBlock Text="{Binding StatusText}"
-                       FontFamily="{Binding FontFamily}"
-                       FontSize="{Binding Size}"
-                       Foreground="{Binding Color}"
-                       Visibility="{Binding ShowStatus, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                       FontFamily="{Binding Config.FontFamily}"
+                       FontSize="{Binding Config.Size}"
+                       Foreground="{Binding Config.Color}"
+                       Visibility="{Binding Config.ShowStatus, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         </StackPanel>
 
