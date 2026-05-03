@@ -6,6 +6,7 @@ using System.Windows.Threading;
 using ScreenStats.App.Config;
 using ScreenStats.App.Config.Models;
 using ScreenStats.App.Helpers;
+using ScreenStats.App.Info.Providers;
 using ScreenStats.App.Render;
 using ScreenStats.App.Widgets;
 
@@ -21,6 +22,8 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        
+        MediaInfoProvider.Init();
 
         _config = ConfigLoader.Load(AppPaths.ConfigFile);
         _configWatcher = new ConfigWatcher(AppPaths.ConfigFile, ReloadConfig);

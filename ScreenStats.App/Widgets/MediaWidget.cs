@@ -1,29 +1,19 @@
 ﻿using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using Windows.Media.Control;
 using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
-using ScreenStats.App.Helpers;
+using ScreenStats.App.Info;
 
 namespace ScreenStats.App.Widgets;
 
-public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
+public class MediaWidget(MediaWidgetConfig config) : UpdateableWidget, INotifyPropertyChanged
 {
-    private GlobalSystemMediaTransportControlsSessionManager? _manager;
-    private GlobalSystemMediaTransportControlsSession? _session;
-
-    public MediaWidgetConfig Config { get; }
-
-    public MediaWidget(MediaWidgetConfig config)
-    {
-        Config = config;
-        Init();
-    }
+    public MediaWidgetConfig Config { get; } = config;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public string DisplayText
+    public string? DisplayText
     {
         get;
         set
@@ -35,7 +25,7 @@ public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
         }
     }
 
-    public string Artist
+    public string? Artist
     {
         get;
         set
@@ -47,7 +37,7 @@ public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
         }
     }
 
-    public string StatusText
+    public string? StatusText
     {
         get;
         set
@@ -71,48 +61,28 @@ public class MediaWidget : UpdateableWidget, INotifyPropertyChanged
         }
     }
 
-    private async void Init()
+    public override void Update()
     {
-        _manager = await GlobalSystemMediaTransportControlsSessionManager.RequestAsync();
-    }
-
-    public override async void Update()
-    {
-        if (_manager == null)
-        {
-            return;
-        }
-
-        _session = _manager.GetCurrentSession();
-        if (_session == null)
-        {
-            return;
-        }
-
-        var media = await _session.TryGetMediaPropertiesAsync();
-        var playback = _session.GetPlaybackInfo();
-        var timeline = _session.GetTimelineProperties();
+        var media = SystemInfo.GetMedia();
 
         var title = media.Title ?? "Unknown Title";
         var artist = media.Artist ?? "Unknown Artist";
-
-        var isPlaying = playback.PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing;
-        var status = isPlaying ? "▶︎ Playing" : "⏸ Paused";
+        var status = media.IsPlaying ? "▶︎ Playing" : "⏸ Paused";
 
         Artist = artist;
         StatusText = status;
-        Thumbnail = ThumbnailHelper.GetThumbnail(media.Thumbnail);
+        Thumbnail = media.Thumbnail;
 
-        var position = $"{timeline.Position:mm\\:ss}";
-        var duration = $"{timeline.EndTime:mm\\:ss}";
+        var position = $"{media.Position:mm\\:ss}";
+        var duration = $"{media.Duration:mm\\:ss}";
 
-        var app = _session.SourceAppUserModelId ?? "Unknown App";
+        var app = media.App ?? "Unknown App";
 
         if (Config.Content == null)
         {
             return;
         }
-        
+
         DisplayText = Config.Content
             .Replace("{title}", title)
             .Replace("{artist}", artist)
