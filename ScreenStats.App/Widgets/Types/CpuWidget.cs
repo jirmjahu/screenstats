@@ -1,13 +1,16 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Controls;
 using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
-using ScreenStats.App.Info;
 
 namespace ScreenStats.App.Widgets.Types;
 
 public class CpuWidget(CpuWidgetConfig config) : UpdateableWidget, INotifyPropertyChanged
 {
+    // Moving it to the SystemInfo Class made the whole thing break, so I am leaving it here. 
+    private readonly PerformanceCounter _cpuCounter = new("Processor", "% Processor Time", "_Total");
+    
     public CpuWidgetConfig Config { get; } = config;
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -24,7 +27,7 @@ public class CpuWidget(CpuWidgetConfig config) : UpdateableWidget, INotifyProper
 
     public override void Update()
     {
-        Usage = SystemInfo.GetCpu().UsagePercentage;
+        Usage = (float)Math.Round(_cpuCounter.NextValue(), 1);
     }
 
     public override UserControl GetControl()

@@ -15,7 +15,6 @@ public static class PlaceholderReplacer
             return null;
         }
         
-        var cpu = SystemInfo.GetCpu();
         var ram = SystemInfo.GetRam();
 
         return text
@@ -29,7 +28,6 @@ public static class PlaceholderReplacer
             .Replace("{uptime}", FormatUptime(TimeSpan.FromMilliseconds(Environment.TickCount64)))
             .Replace("{ip}", GetLocalIpAddress())
             .Replace("{cpu_cores}", Environment.ProcessorCount.ToString())
-            .Replace("{cpu_usage}", cpu.UsagePercentage.ToString("0.0"))
             .Replace("{ram_used}", ram.UsedGb.ToString("0.0"))
             .Replace("{ram_total}", ram.TotalGb.ToString("0.0"))
             .Replace("{ram_available}", ram.AvailableGb.ToString("0.0"));

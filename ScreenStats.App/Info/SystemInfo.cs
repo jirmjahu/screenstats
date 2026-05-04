@@ -5,11 +5,6 @@ namespace ScreenStats.App.Info;
 
 public static class SystemInfo
 {
-    public static CpuInfoData GetCpu()
-    {
-        return CpuInfoProvider.Get();
-    }
-    
     public static RamInfoData GetRam()
     {
         return RamInfoProvider.Get();
