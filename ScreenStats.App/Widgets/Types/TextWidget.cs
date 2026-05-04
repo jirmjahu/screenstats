@@ -4,7 +4,7 @@ using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
 using ScreenStats.App.Text;
 
-namespace ScreenStats.App.Widgets;
+namespace ScreenStats.App.Widgets.Types;
 
 public class TextWidget(TextWidgetConfig config) : UpdateableWidget, INotifyPropertyChanged
 {

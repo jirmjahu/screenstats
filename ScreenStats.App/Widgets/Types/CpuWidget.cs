@@ -4,7 +4,7 @@ using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
 using ScreenStats.App.Info;
 
-namespace ScreenStats.App.Widgets;
+namespace ScreenStats.App.Widgets.Types;
 
 public class CpuWidget(CpuWidgetConfig config) : UpdateableWidget, INotifyPropertyChanged
 {

@@ -1,39 +1,25 @@
-﻿using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Threading;
-using ScreenStats.App.Config;
 using ScreenStats.App.Config.Models;
 using ScreenStats.App.Helpers;
-using ScreenStats.App.Info.Providers;
-using ScreenStats.App.Render;
 using ScreenStats.App.Widgets;
 
 namespace ScreenStats.App;
 
 public partial class MainWindow : Window
 {
-    private AppConfig _config;
-    private readonly ConfigWatcher _configWatcher;
-    private readonly List<Widget> _widgets;
-    private readonly DispatcherTimer _updateTimer;
+    private AppConfig _config;  
+    private readonly WidgetManager _widgetManager;
 
-    public MainWindow()
+    public MainWindow(AppConfig config, WidgetManager widgetManager)
     {
         InitializeComponent();
-        
-        MediaInfoProvider.Init();
-
-        _config = ConfigLoader.Load(AppPaths.ConfigFile);
-        _configWatcher = new ConfigWatcher(AppPaths.ConfigFile, ReloadConfig);
-        _widgets = WidgetHelper.CreateWidgetsFromConfig(_config);
+        _config = config;
+        _widgetManager = widgetManager;
 
         ApplyConfig();
         RenderWidgets();
-
-        _updateTimer = CreateUpdateTimer();
-        _updateTimer.Start();
     }
 
     private void ApplyConfig()
@@ -63,65 +49,22 @@ public partial class MainWindow : Window
         UpdateWindowPosition();
     }
 
-    private void ReloadConfig()
+    private void RenderWidgets()
+    {
+        Panel.Children.Clear();
+        WidgetRenderer.Render(Panel, _config.Layout, _widgetManager.Widgets);
+    }
+    
+    public void Reload(AppConfig config)
     {
         Dispatcher.Invoke(() =>
         {
-            _config = ConfigLoader.Load(AppPaths.ConfigFile);
-
-            _widgets.Clear();
-            _widgets.AddRange(WidgetHelper.CreateWidgetsFromConfig(_config));
-
+            _config = config;
             ApplyConfig();
             RenderWidgets();
         });
     }
-
-    private void RenderWidgets()
-    {
-        Panel.Children.Clear();
-        WidgetRenderer.Render(Panel, _config.Layout, _widgets);
-    }
-
-    protected override void OnContentRendered(EventArgs e)
-    {
-        base.OnContentRendered(e);
-        WindowHelper.MakeDesktopWidget(this);
-    }
-
-    private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
-    {
-        UpdateWindowPosition();
-    }
-
-    protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
-    {
-        base.OnRenderSizeChanged(sizeInfo);
-        UpdateWindowPosition();
-    }
-
-    private DispatcherTimer CreateUpdateTimer()
-    {
-        var timer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromSeconds(1)
-        };
-
-        timer.Tick += (_, _) => UpdateWidgets();
-        return timer;
-    }
-
-    private void UpdateWidgets()
-    {
-        foreach (var widget in _widgets)
-        {
-            if (widget is UpdateableWidget updateable)
-            {
-                updateable.Update();
-            }
-        }
-    }
-
+    
     private void UpdateWindowPosition()
     {
         var workArea = SystemParameters.WorkArea;
@@ -148,5 +91,22 @@ public partial class MainWindow : Window
         {
             Top = workArea.Bottom - Height;
         }
+    }
+
+    protected override void OnContentRendered(EventArgs e)
+    {
+        base.OnContentRendered(e);
+        WindowHelper.MakeDesktopWidget(this);
+    }
+
+    private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        UpdateWindowPosition();
+    }
+
+    protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+    {
+        base.OnRenderSizeChanged(sizeInfo);
+        UpdateWindowPosition();
     }
 }

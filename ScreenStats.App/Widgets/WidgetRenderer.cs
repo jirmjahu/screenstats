@@ -1,9 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using ScreenStats.App.Config.Models;
-using ScreenStats.App.Widgets;
 
-namespace ScreenStats.App.Render;
+namespace ScreenStats.App.Widgets;
 
 public static class WidgetRenderer
 {

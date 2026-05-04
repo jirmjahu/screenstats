@@ -1,23 +1,31 @@
 ﻿using ScreenStats.App.Config.Models;
-using ScreenStats.App.Widgets;
+using ScreenStats.App.Widgets.Types;
 
-namespace ScreenStats.App.Helpers;
+namespace ScreenStats.App.Widgets;
 
-public static class WidgetHelper
+public class WidgetManager
 {
+    public List<Widget> Widgets { get; set; } = [];
+
+    public void Load(AppConfig config)
+    {
+        Widgets.Clear();
+        Widgets.AddRange(CreateWidgetsFromConfig(config));
+    }
+
     /// <summary>
     /// Creates widget objects from the app configuration
     /// </summary>
     /// <param name="appConfig">The configuration with widget settings</param>
     /// <returns>The list of created widgets</returns>
-    public static List<Widget> CreateWidgetsFromConfig(AppConfig appConfig)
+    private List<Widget> CreateWidgetsFromConfig(AppConfig appConfig)
     {
         var widgets = new List<Widget>();
 
         foreach (var config in appConfig.Widgets.Values)
         {
             ApplyDefaults(config, appConfig.Defaults);
-            
+
             switch (config)
             {
                 case TextWidgetConfig textConfig:
@@ -41,7 +49,7 @@ public static class WidgetHelper
         return widgets;
     }
 
-    private static void ApplyDefaults(WidgetConfig config, Dictionary<string, string> defaults)
+    private void ApplyDefaults(WidgetConfig config, Dictionary<string, string> defaults)
     {
         foreach (var property in config.GetType().GetProperties().Where(p => p.CanWrite))
         {
@@ -58,6 +66,17 @@ public static class WidgetHelper
             var targetType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
             var converted = Convert.ChangeType(defaultValue, targetType);
             property.SetValue(config, converted);
+        }
+    }
+
+    public void UpdateWidgets()
+    {
+        foreach (var widget in Widgets)
+        {
+            if (widget is UpdateableWidget updateable)
+            {
+                updateable.Update();
+            }
         }
     }
 }
