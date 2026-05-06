@@ -12,12 +12,15 @@
             <TextBlock Text="{Binding Config.Content}"
                        FontFamily="{Binding Config.FontFamily}"
                        FontSize="{Binding Config.Size}"
+                       FontWeight="{Binding Config.FontWeight}"
+                       FontStyle="{Binding Config.FontStyle}"
                        Foreground="White" />
 
             <TextBlock Text="{Binding UsageText}"
                        FontFamily="{Binding Config.FontFamily}"
                        FontSize="{Binding Config.ValueSize}"
                        FontWeight="Bold"
+                       FontStyle="{Binding Config.FontStyle}"
                        Foreground="{Binding Config.Color}" />
 
             <controls:UsageBarControl

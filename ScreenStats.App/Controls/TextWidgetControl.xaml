@@ -5,6 +5,8 @@
     <TextBlock Text="{Binding DisplayText}"
                FontFamily="{Binding Config.FontFamily}"
                FontSize="{Binding Config.Size}"
+               FontWeight="{Binding Config.FontWeight}"
+               FontStyle="{Binding Config.FontStyle}"
                Foreground="White" />
 
 </UserControl>

@@ -27,17 +27,22 @@
                        FontFamily="{Binding Config.FontFamily}"
                        FontSize="{Binding Config.Size}"
                        FontWeight="Bold"
+                       FontStyle="{Binding Config.FontStyle}"
                        Foreground="{Binding Config.Color}" />
 
             <TextBlock Text="{Binding Artist}"
                        FontFamily="{Binding Config.FontFamily}"
                        FontSize="{Binding Config.Size}"
+                       FontWeight="{Binding Config.FontWeight}"
+                       FontStyle="{Binding Config.FontStyle}"
                        Foreground="{Binding Config.Color}"
                        Visibility="{Binding Config.ShowArtist, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
             <TextBlock Text="{Binding StatusText}"
                        FontFamily="{Binding Config.FontFamily}"
                        FontSize="{Binding Config.Size}"
+                       FontWeight="{Binding Config.FontWeight}"
+                       FontStyle="{Binding Config.FontStyle}"
                        Foreground="{Binding Config.Color}"
                        Visibility="{Binding Config.ShowStatus, Converter={StaticResource BooleanToVisibilityConverter}}" />
 

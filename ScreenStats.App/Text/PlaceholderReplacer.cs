@@ -55,6 +55,6 @@ public static class PlaceholderReplacer
 
     private static string FormatUptime(TimeSpan uptime)
     {
-        return $"{uptime.Days}d {uptime.Hours}h : {uptime.Minutes}m {uptime.Seconds}s";
+        return $"{uptime.Days}d {uptime.Hours}h {uptime.Minutes}m {uptime.Seconds}s";
     }
 }
