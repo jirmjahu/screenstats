@@ -31,6 +31,12 @@ public class CpuWidget(CpuWidgetConfig config) : UpdateableWidget, INotifyProper
         return Task.CompletedTask;
     }
 
+    public override void Dispose()
+    {
+        _cpuCounter.Dispose();
+        base.Dispose();
+    }
+
     public override UserControl GetControl()
     {
         return new CpuWidgetControl(this);
