@@ -25,13 +25,19 @@ public class CpuWidget(CpuWidgetConfig config) : UpdateableWidget, INotifyProper
         }
     }
 
-    public override void Update()
+    protected override Task Update()
     {
         Usage = (float)Math.Round(_cpuCounter.NextValue(), 1);
+        return Task.CompletedTask;
     }
 
     public override UserControl GetControl()
     {
         return new CpuWidgetControl(this);
+    }
+    
+    protected override TimeSpan UpdateInterval()
+    {
+        return TimeSpan.FromSeconds(1);
     }
 }

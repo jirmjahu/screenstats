@@ -32,7 +32,7 @@ public class DriveUsageWidget(DriveUsageConfig config) : UpdateableWidget, INoti
         }
     }
 
-    public override void Update()
+    protected override Task Update()
     {
         var drive = SystemInfo.GetDrive(Config.Drive!);
 
@@ -46,10 +46,17 @@ public class DriveUsageWidget(DriveUsageConfig config) : UpdateableWidget, INoti
             .Replace("{used}", $"{drive.UsedGb:0.0} GB")
             .Replace("{free}", $"{drive.FreeGb:0.0} GB")
             .Replace("{total}", $"{drive.TotalGb:0.0} GB");
+
+        return Task.CompletedTask;
     }
 
     public override UserControl GetControl()
     {
         return new DriveUsageControl(this);
+    }
+
+    protected override TimeSpan UpdateInterval()
+    {
+        return TimeSpan.FromSeconds(30);
     }
 }

@@ -11,6 +11,19 @@ public class WidgetManager
     {
         Widgets.Clear();
         Widgets.AddRange(CreateWidgetsFromConfig(config));
+
+        foreach (var updateable in Widgets.OfType<UpdateableWidget>())
+        {
+            updateable.Start();
+        }
+    }
+
+    public void Stop()
+    {
+        foreach (var updateable in Widgets.OfType<UpdateableWidget>())
+        {
+            updateable.Dispose();
+        }
     }
 
     /// <summary>
@@ -69,17 +82,6 @@ public class WidgetManager
             var targetType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
             var converted = Convert.ChangeType(defaultValue, targetType);
             property.SetValue(config, converted);
-        }
-    }
-
-    public void UpdateWidgets()
-    {
-        foreach (var widget in Widgets)
-        {
-            if (widget is UpdateableWidget updateable)
-            {
-                updateable.Update();
-            }
         }
     }
 }

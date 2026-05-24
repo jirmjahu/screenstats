@@ -34,16 +34,23 @@ public class RamWidget(RamWidgetConfig config) : UpdateableWidget, INotifyProper
         }
     }
 
-    public override void Update()
+    protected override Task Update()
     {
         var ram = SystemInfo.GetRam();
 
         UsageText = $"{ram.UsedGb:0.0} GB / {ram.TotalGb:0.0} GB";
         Usage = (double)ram.UsedBytes / ram.TotalBytes * 100;
+        return Task.CompletedTask;
     }
 
     public override UserControl GetControl()
     {
         return new RamWidgetControl(this);
     }
+    
+    protected override TimeSpan UpdateInterval()
+    {
+        return TimeSpan.FromSeconds(1);
+    }
+    
 }

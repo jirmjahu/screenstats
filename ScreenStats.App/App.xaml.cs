@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Threading;
+using System.Windows;
 using ScreenStats.App.Config;
 using ScreenStats.App.Config.Models;
 using ScreenStats.App.Info.Providers;
@@ -13,7 +12,6 @@ public partial class App : Application
     private AppConfig? _config;
     private ConfigWatcher? _configWatcher;
     private readonly WidgetManager _widgetManager = new();
-    private DispatcherTimer? _updateTimer;
     private TrayIcon? _trayIcon;
 
     private MainWindow? _mainWindow;
@@ -32,14 +30,11 @@ public partial class App : Application
         _mainWindow.Show();
 
         _trayIcon = new TrayIcon(Reload, Shutdown);
-
-        _updateTimer = CreateUpdateTimer();
-        _updateTimer.Start();
     }
 
     protected override void OnExit(ExitEventArgs e)
     {
-        _updateTimer?.Stop();
+        _widgetManager.Stop();
         _trayIcon?.Dispose();
 
         base.OnExit(e);
@@ -49,24 +44,9 @@ public partial class App : Application
     {
         Dispatcher.Invoke(() =>
         {
-            _updateTimer?.Stop();
- 
             _config = ConfigLoader.Load(AppPaths.ConfigFile);
             _widgetManager.Load(_config);
             _mainWindow?.Reload(_config);
- 
-            _updateTimer?.Start();
         });
-    }
-
-    private DispatcherTimer CreateUpdateTimer()
-    {
-        var timer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromSeconds(1)
-        };
-
-        timer.Tick += (_, _) => _widgetManager.UpdateWidgets();
-        return timer;
     }
 }

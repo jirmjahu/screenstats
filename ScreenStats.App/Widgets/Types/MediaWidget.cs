@@ -61,7 +61,7 @@ public class MediaWidget(MediaWidgetConfig config) : UpdateableWidget, INotifyPr
         }
     }
 
-    public override void Update()
+    protected override Task Update()
     {
         var media = SystemInfo.GetMedia();
 
@@ -80,7 +80,7 @@ public class MediaWidget(MediaWidgetConfig config) : UpdateableWidget, INotifyPr
 
         if (Config.Content == null)
         {
-            return;
+            return Task.CompletedTask;
         }
 
         DisplayText = Config.Content
@@ -90,10 +90,18 @@ public class MediaWidget(MediaWidgetConfig config) : UpdateableWidget, INotifyPr
             .Replace("{app}", app)
             .Replace("{position}", position)
             .Replace("{duration}", duration);
+
+        return Task.CompletedTask;
     }
 
     public override UserControl GetControl()
     {
         return new MediaWidgetControl(this);
     }
+    
+    protected override TimeSpan UpdateInterval()
+    {
+        return TimeSpan.FromSeconds(1);
+    }
+    
 }

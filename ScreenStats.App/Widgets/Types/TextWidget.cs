@@ -24,13 +24,21 @@ public class TextWidget(TextWidgetConfig config) : UpdateableWidget, INotifyProp
         }
     } = "";
 
-    public override void Update()
+    protected override Task Update()
     {
         DisplayText = PlaceholderReplacer.Replace(Config.Content);
+        return Task.CompletedTask;
     }
     
     public override UserControl GetControl()
     {
         return new TextWidgetControl(this);
     }
+    
+    
+    protected override TimeSpan UpdateInterval()
+    {
+        return TimeSpan.FromSeconds(1);
+    }
+    
 }

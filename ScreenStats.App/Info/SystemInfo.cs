@@ -20,8 +20,13 @@ public static class SystemInfo
         return MediaInfoProvider.Get();
     }
 
-    public static WeatherInfoData? GetWeather(string city, string country, string temperatureUnit, string windSpeedUnit)
+    public static async Task<WeatherInfoData?> GetWeather(string city, string country, string temperatureUnit, string windSpeedUnit)
     {
-        return WeatherInfoProvider.Get(city, country, temperatureUnit, windSpeedUnit);
+        return await WeatherInfoProvider.GetAsync(
+            city,
+            country,
+            temperatureUnit,
+            windSpeedUnit
+        );
     }
 }

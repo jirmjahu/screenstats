@@ -26,8 +26,8 @@ public class WeatherWidget(WeatherWidgetConfig config) : UpdateableWidget, INoti
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayText)));
         }
     } = "";
-
-    public override void Update()
+    
+    protected override async Task Update()
     {
         if (string.IsNullOrWhiteSpace(Config.City) || string.IsNullOrWhiteSpace(Config.Country))
         {
@@ -35,7 +35,7 @@ public class WeatherWidget(WeatherWidgetConfig config) : UpdateableWidget, INoti
             return;
         }
 
-        var weather = SystemInfo.GetWeather(Config.City, Config.Country, Config.TemperatureUnit, Config.WindSpeedUnit);
+        var weather = await SystemInfo.GetWeather(Config.City, Config.Country, Config.TemperatureUnit, Config.WindSpeedUnit);
         if (weather == null)
         {
             DisplayText = "Loading weather...";
@@ -59,4 +59,10 @@ public class WeatherWidget(WeatherWidgetConfig config) : UpdateableWidget, INoti
     {
         return new WeatherWidgetControl(this);
     }
+    
+    protected override TimeSpan UpdateInterval()
+    {
+        return TimeSpan.FromMinutes(10);
+    }
+    
 }
