@@ -38,7 +38,8 @@ public class DriveUsageWidget(DriveUsageConfig config) : UpdateableWidget, INoti
 
         Usage = drive.UsedPercentage;
 
-        DisplayText = Config.Content!.Replace("\\n", Environment.NewLine)
+        DisplayText = Config.Content!
+            .Replace("\\n", Environment.NewLine)
             .Replace("{letter}", Config.Drive)
             .Replace("{label}", drive.Label)
             .Replace("{percent}", drive.UsedPercentage.ToString("0"))

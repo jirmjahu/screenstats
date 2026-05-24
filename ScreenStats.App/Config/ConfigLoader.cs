@@ -59,6 +59,10 @@ public static class ConfigLoader
             {
                 widget = section.Get<DriveUsageConfig>();
             }
+            else if (type == "weather")
+            {
+                widget = section.Get<WeatherWidgetConfig>();
+            }
 
             if (widget != null)
             {

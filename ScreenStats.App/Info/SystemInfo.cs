@@ -1,4 +1,4 @@
-﻿using ScreenStats.App.Info.Models;
+using ScreenStats.App.Info.Models;
 using ScreenStats.App.Info.Providers;
 
 namespace ScreenStats.App.Info;
@@ -18,5 +18,10 @@ public static class SystemInfo
     public static MediaInfoData GetMedia()
     {
         return MediaInfoProvider.Get();
+    }
+
+    public static WeatherInfoData? GetWeather(string city, string country, string temperatureUnit, string windSpeedUnit)
+    {
+        return WeatherInfoProvider.Get(city, country, temperatureUnit, windSpeedUnit);
     }
 }

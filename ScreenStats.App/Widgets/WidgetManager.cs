@@ -43,6 +43,9 @@ public class WidgetManager
                 case DriveUsageConfig driveUsageConfig:
                     widgets.Add(new DriveUsageWidget(driveUsageConfig));
                     break;
+                case WeatherWidgetConfig weatherConfig:
+                    widgets.Add(new WeatherWidget(weatherConfig));
+                    break;
             }
         }
 
