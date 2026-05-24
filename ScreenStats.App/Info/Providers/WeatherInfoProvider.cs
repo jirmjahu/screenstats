@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using ScreenStats.App.Info.Models;
 using ScreenStats.App.Weather;
 
@@ -6,7 +7,7 @@ namespace ScreenStats.App.Info.Providers;
 public static class WeatherInfoProvider
 {
     private static readonly TimeSpan RefreshInterval = TimeSpan.FromMinutes(10);
-    private static readonly Dictionary<string, CacheEntry> Cache = new();
+    private static readonly ConcurrentDictionary<string, CacheEntry> Cache = new();
 
     public static WeatherInfoData? Get(string city, string country, string temperatureUnit, string windSpeedUnit)
     {
