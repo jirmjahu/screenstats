@@ -3,6 +3,7 @@ using System.Windows.Threading;
 using ScreenStats.App.Config;
 using ScreenStats.App.Config.Models;
 using ScreenStats.App.Info.Providers;
+using ScreenStats.App.Tray;
 using ScreenStats.App.Widgets;
 
 namespace ScreenStats.App;
@@ -13,6 +14,7 @@ public partial class App : Application
     private ConfigWatcher? _configWatcher;
     private readonly WidgetManager _widgetManager = new();
     private DispatcherTimer? _updateTimer;
+    private TrayIcon? _trayIcon;
 
     private MainWindow? _mainWindow;
 
@@ -28,9 +30,19 @@ public partial class App : Application
 
         _mainWindow = new MainWindow(_config, _widgetManager);
         _mainWindow.Show();
-        
+
+        _trayIcon = new TrayIcon(Reload, Shutdown);
+
         _updateTimer = CreateUpdateTimer();
         _updateTimer.Start();
+    }
+
+    protected override void OnExit(ExitEventArgs e)
+    {
+        _updateTimer?.Stop();
+        _trayIcon?.Dispose();
+
+        base.OnExit(e);
     }
 
     private void Reload()
