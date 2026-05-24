@@ -18,7 +18,7 @@ public abstract class UpdateableWidget : Widget, IDisposable
         _timer.Start();
     }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         _timer?.Stop();
         _timer = null;
