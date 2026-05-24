@@ -1,13 +1,15 @@
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using H.NotifyIcon;
 
 namespace ScreenStats.App.Tray;
 
 public class TrayIcon : IDisposable
 {
-    private readonly NotifyIcon _notifyIcon;
+    private readonly TaskbarIcon _taskbarIcon;
     private readonly Action _onReload;
     private readonly Action _onExit;
 
@@ -16,26 +18,37 @@ public class TrayIcon : IDisposable
         _onReload = onReload;
         _onExit = onExit;
 
-        _notifyIcon = new NotifyIcon
+        _taskbarIcon = new TaskbarIcon
         {
-            Icon = LoadIcon(),
-            Text = "ScreenStats",
-            Visible = true,
-            ContextMenuStrip = BuildMenu()
+            IconSource = new BitmapImage(new Uri("pack://application:,,,/Assets/icon.ico")),
+            ToolTipText = "ScreenStats",
+            ContextMenu = BuildMenu()
         };
+
+        _taskbarIcon.ForceCreate();
     }
 
-    private ContextMenuStrip BuildMenu()
+    private ContextMenu BuildMenu()
     {
-        var menu = new ContextMenuStrip();
+        var menu = new ContextMenu();
 
-        menu.Items.Add("Open Config", null, (_, _) => OpenConfig());
-        menu.Items.Add("Open Config Folder", null, (_, _) => OpenConfigFolder());
-        menu.Items.Add("Reload Config", null, (_, _) => _onReload());
-        menu.Items.Add(new ToolStripSeparator());
-        menu.Items.Add("Exit", null, (_, _) => _onExit());
+        menu.Items.Add(CreateItem("Open Config", (_, _) => OpenConfig()));
+        menu.Items.Add(CreateItem("Open Config Folder", (_, _) => OpenConfigFolder()));
+        menu.Items.Add(CreateItem("Reload Config", (_, _) => _onReload()));
+        menu.Items.Add(new Separator());
+        menu.Items.Add(CreateItem("Exit", (_, _) => _onExit()));
 
         return menu;
+    }
+
+    private static MenuItem CreateItem(string header, RoutedEventHandler onClick)
+    {
+        var item = new MenuItem 
+        {
+            Header = header
+        };
+        item.Click += onClick;
+        return item;
     }
 
     private static void OpenConfig()
@@ -70,15 +83,8 @@ public class TrayIcon : IDisposable
         });
     }
 
-    private static Icon? LoadIcon()
-    {
-        var exePath = Environment.ProcessPath;
-
-        return exePath == null ? SystemIcons.Application : Icon.ExtractAssociatedIcon(exePath);
-    }
-
     public void Dispose()
     {
-        _notifyIcon.Dispose();
+        _taskbarIcon.Dispose();
     }
 }
