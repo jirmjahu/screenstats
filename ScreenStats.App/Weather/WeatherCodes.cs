@@ -36,10 +36,10 @@ public static class WeatherCodes
     };
 
     public static string Description(int code) =>
-        Entries.TryGetValue(code, out var enty) ? enty.Description : "Unknown";
+        Entries.TryGetValue(code, out var entry) ? entry.Description : "Unknown";
 
     public static string Icon(int code, bool isDay) =>
-        Entries.TryGetValue(code, out var enty) ? enty.GetIcon(isDay) : "·";
+        Entries.TryGetValue(code, out var entry) ? entry.GetIcon(isDay) : "·";
 
     private record WeatherEntry(string Description, string DayIcon, string? NightIcon = null)
     {
