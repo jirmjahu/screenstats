@@ -1,16 +1,13 @@
-﻿using System.ComponentModel;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
 using ScreenStats.App.Info;
 
 namespace ScreenStats.App.Widgets.Types;
 
-public class RamWidget(RamWidgetConfig config) : UpdateableWidget, INotifyPropertyChanged
+public class RamWidget(RamWidgetConfig config) : UpdateableWidget
 {
     public RamWidgetConfig Config { get; } = config;
-
-    public event PropertyChangedEventHandler? PropertyChanged;
 
     public string UsageText
     {
@@ -20,7 +17,7 @@ public class RamWidget(RamWidgetConfig config) : UpdateableWidget, INotifyProper
             if (field == value) return;
 
             field = value;
-            PropertyChanged?.Invoke(this, new(nameof(UsageText)));
+            OnPropertyChanged();
         }
     } = "";
 
@@ -30,7 +27,7 @@ public class RamWidget(RamWidgetConfig config) : UpdateableWidget, INotifyProper
         set
         {
             field = value;
-            PropertyChanged?.Invoke(this, new(nameof(Usage)));
+            OnPropertyChanged();
         }
     }
 

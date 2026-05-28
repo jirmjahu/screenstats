@@ -6,12 +6,6 @@ namespace ScreenStats.App.Widgets;
 
 public static class WidgetRenderer
 {
-    /// <summary>
-    /// Renders all widgets
-    /// </summary>
-    /// <param name="panel">The panel where the widgets are added</param>
-    /// <param name="layout">The Layout configuration</param>
-    /// <param name="widgets">The widgets to render</param>
     public static void Render(StackPanel panel, LayoutConfig layout, List<Widget> widgets)
     {
         for (var i = 0; i < widgets.Count; i++)

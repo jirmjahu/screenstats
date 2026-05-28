@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Windows.Controls;
 using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
@@ -6,11 +5,9 @@ using ScreenStats.App.Info;
 
 namespace ScreenStats.App.Widgets.Types;
 
-public class WeatherWidget(WeatherWidgetConfig config) : UpdateableWidget, INotifyPropertyChanged
+public class WeatherWidget(WeatherWidgetConfig config) : UpdateableWidget
 {
     public WeatherWidgetConfig Config { get; } = config;
-
-    public event PropertyChangedEventHandler? PropertyChanged;
 
     public string? DisplayText
     {
@@ -23,7 +20,7 @@ public class WeatherWidget(WeatherWidgetConfig config) : UpdateableWidget, INoti
             }
 
             field = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayText)));
+            OnPropertyChanged();
         }
     } = "";
     

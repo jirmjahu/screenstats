@@ -1,16 +1,13 @@
-﻿using System.ComponentModel;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
 using ScreenStats.App.Info;
 
 namespace ScreenStats.App.Widgets.Types;
 
-public class DriveUsageWidget(DriveUsageConfig config) : UpdateableWidget, INotifyPropertyChanged
+public class DriveUsageWidget(DriveUsageConfig config) : UpdateableWidget
 {
     public DriveUsageConfig Config { get; } = config;
-
-    public event PropertyChangedEventHandler? PropertyChanged;
 
     public double Usage
     {
@@ -18,7 +15,7 @@ public class DriveUsageWidget(DriveUsageConfig config) : UpdateableWidget, INoti
         set
         {
             field = value;
-            PropertyChanged?.Invoke(this, new(nameof(Usage)));
+            OnPropertyChanged();
         }
     }
 
@@ -28,7 +25,7 @@ public class DriveUsageWidget(DriveUsageConfig config) : UpdateableWidget, INoti
         set
         {
             field = value;
-            PropertyChanged?.Invoke(this, new(nameof(DisplayText)));
+            OnPropertyChanged();
         }
     }
 

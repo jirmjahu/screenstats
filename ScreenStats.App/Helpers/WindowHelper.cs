@@ -5,11 +5,7 @@ using ScreenStats.App.Native;
 namespace ScreenStats.App.Helpers;
 
 public static class WindowHelper
-{
-    /// <summary>
-    /// Makes the window behave like a desktop widget
-    /// </summary>
-    /// <param name="window">The window</param>
+{ 
     public static void MakeDesktopWidget(Window window)
     {
         var hwnd = new WindowInteropHelper(window).Handle;
@@ -27,10 +23,10 @@ public static class WindowHelper
         );
 
         // Set Progman as owner of the window so it is bound to the desktop
-        // This also prevents it from being hidden by Win+D or the Show Desktop button
+        // Using Program also prevents the window from being hidden by Win+D
         NativeMethods.SetWindowLongPtr(hwnd, NativeMethods.GWLP_HWNDPARENT, progman);
 
-        // Apply widget styles
+        // Apply styles
         var style = NativeMethods.GetWindowLongPtr(hwnd, NativeMethods.GWL_EXSTYLE);
 
         style |= NativeMethods.WS_EX_TOOLWINDOW

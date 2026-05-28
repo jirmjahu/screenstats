@@ -26,11 +26,6 @@ public class WidgetManager
         }
     }
 
-    /// <summary>
-    /// Creates widget objects from the app configuration
-    /// </summary>
-    /// <param name="appConfig">The configuration with widget settings</param>
-    /// <returns>The list of created widgets</returns>
     private List<Widget> CreateWidgetsFromConfig(AppConfig appConfig)
     {
         var widgets = new List<Widget>();

@@ -1,10 +1,14 @@
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 
 namespace ScreenStats.App.Widgets;
 
-public abstract class UpdateableWidget : Widget, IDisposable
+public abstract class UpdateableWidget : Widget, INotifyPropertyChanged, IDisposable
 {
     private DispatcherTimer? _timer;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public void Start()
     {
@@ -22,6 +26,11 @@ public abstract class UpdateableWidget : Widget, IDisposable
     {
         _timer?.Stop();
         _timer = null;
+    }
+
+    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     protected abstract Task Update();

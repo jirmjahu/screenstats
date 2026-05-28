@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
@@ -7,11 +6,9 @@ using ScreenStats.App.Info;
 
 namespace ScreenStats.App.Widgets.Types;
 
-public class MediaWidget(MediaWidgetConfig config) : UpdateableWidget, INotifyPropertyChanged
+public class MediaWidget(MediaWidgetConfig config) : UpdateableWidget
 {
     public MediaWidgetConfig Config { get; } = config;
-
-    public event PropertyChangedEventHandler? PropertyChanged;
 
     public string? DisplayText
     {
@@ -21,7 +18,7 @@ public class MediaWidget(MediaWidgetConfig config) : UpdateableWidget, INotifyPr
             if (field == value) return;
 
             field = value;
-            PropertyChanged?.Invoke(this, new(nameof(DisplayText)));
+            OnPropertyChanged();
         }
     }
 
@@ -33,7 +30,7 @@ public class MediaWidget(MediaWidgetConfig config) : UpdateableWidget, INotifyPr
             if (field == value) return;
 
             field = value;
-            PropertyChanged?.Invoke(this, new(nameof(Artist)));
+            OnPropertyChanged();
         }
     }
 
@@ -45,7 +42,7 @@ public class MediaWidget(MediaWidgetConfig config) : UpdateableWidget, INotifyPr
             if (field == value) return;
 
             field = value;
-            PropertyChanged?.Invoke(this, new(nameof(StatusText)));
+            OnPropertyChanged();
         }
     }
 
@@ -57,7 +54,7 @@ public class MediaWidget(MediaWidgetConfig config) : UpdateableWidget, INotifyPr
             if (field == value) return;
 
             field = value;
-            PropertyChanged?.Invoke(this, new(nameof(Thumbnail)));
+            OnPropertyChanged();
         }
     }
 
