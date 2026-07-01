@@ -9,6 +9,7 @@ public class WidgetManager
 
     public void Load(AppConfig config)
     {
+        Stop();
         Widgets.Clear();
         Widgets.AddRange(CreateWidgetsFromConfig(config));
 

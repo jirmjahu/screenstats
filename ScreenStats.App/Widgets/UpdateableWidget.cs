@@ -14,23 +14,39 @@ public abstract class UpdateableWidget : Widget, INotifyPropertyChanged, IDispos
     {
         _ = Update();
 
+        if (_timer != null)
+        {
+            return;
+        }
+
         _timer = new DispatcherTimer
         {
             Interval = UpdateInterval()
         };
-        _timer.Tick += async (_, _) => await Update();
+        _timer.Tick += OnTimerTick;
         _timer.Start();
     }
 
     public virtual void Dispose()
     {
-        _timer?.Stop();
+        if (_timer == null)
+        {
+            return;
+        }
+
+        _timer.Tick -= OnTimerTick;
+        _timer.Stop();
         _timer = null;
     }
 
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    private async void OnTimerTick(object? sender, EventArgs e)
+    {
+        await Update();
     }
 
     protected abstract Task Update();
