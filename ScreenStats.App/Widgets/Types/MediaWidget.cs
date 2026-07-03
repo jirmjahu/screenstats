@@ -2,6 +2,8 @@
 using System.Windows.Media.Imaging;
 using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
+using ScreenStats.App.Errors;
+using ScreenStats.App.Helpers;
 using ScreenStats.App.Info;
 
 namespace ScreenStats.App.Widgets.Types;
@@ -58,6 +60,23 @@ public class MediaWidget(MediaWidgetConfig config) : UpdateableWidget
         }
     }
 
+    public override List<Error> Validate()
+    {
+        var errors = new List<Error>();
+
+        if (Config.Color != null && !ColorHelper.IsValidColor(Config.Color))
+        {
+            errors.Add(new Error("Invalid color in Media widget"));
+        }
+
+        if (Config.ThumbnailSize <= 0)
+        {
+            errors.Add(new Error("Invalid Thumbnail size in Media widget (Thumbnail size has to be greater than 0)"));
+        }
+
+        return errors;
+    }
+
     protected override Task Update()
     {
         var media = SystemInfo.GetMedia();
@@ -95,10 +114,9 @@ public class MediaWidget(MediaWidgetConfig config) : UpdateableWidget
     {
         return new MediaWidgetControl(this);
     }
-    
+
     protected override TimeSpan UpdateInterval()
     {
         return TimeSpan.FromSeconds(1);
     }
-    
 }

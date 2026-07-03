@@ -1,6 +1,7 @@
 using System.Windows.Controls;
 using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
+using ScreenStats.App.Errors;
 using ScreenStats.App.Info;
 
 namespace ScreenStats.App.Widgets.Types;
@@ -23,16 +24,27 @@ public class WeatherWidget(WeatherWidgetConfig config) : UpdateableWidget
             OnPropertyChanged();
         }
     } = "";
-    
-    protected override async Task Update()
+
+    public override List<Error> Validate()
     {
-        if (string.IsNullOrWhiteSpace(Config.City) || string.IsNullOrWhiteSpace(Config.Country))
+        var errors = new List<Error>();
+
+        if (string.IsNullOrWhiteSpace(Config.City))
         {
-            DisplayText = "Missing city and country in config";
-            return;
+            errors.Add(new Error("No city specified in Weather widget"));
         }
 
-        var weather = await SystemInfo.GetWeather(Config.City, Config.Country, Config.TemperatureUnit, Config.WindSpeedUnit);
+        if (string.IsNullOrWhiteSpace(Config.Country))
+        {
+            errors.Add(new Error("No country specified in Weather widget"));
+        }
+
+        return errors;
+    }
+
+    protected override async Task Update()
+    {
+        var weather = await SystemInfo.GetWeather(Config.City!, Config.Country!, Config.TemperatureUnit, Config.WindSpeedUnit);
         if (weather == null)
         {
             DisplayText = "Loading weather...";
@@ -51,15 +63,15 @@ public class WeatherWidget(WeatherWidgetConfig config) : UpdateableWidget
             .Replace("{wind_unit}", weather.WindSpeedUnit)
             .Replace("{location}", weather.LocationName);
     }
-    
+
     public override UserControl GetControl()
     {
         return new WeatherWidgetControl(this);
     }
-    
+
     protected override TimeSpan UpdateInterval()
     {
         return TimeSpan.FromMinutes(10);
     }
-    
+
 }

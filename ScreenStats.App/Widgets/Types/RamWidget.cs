@@ -1,6 +1,8 @@
 ﻿using System.Windows.Controls;
 using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
+using ScreenStats.App.Errors;
+using ScreenStats.App.Helpers;
 using ScreenStats.App.Info;
 
 namespace ScreenStats.App.Widgets.Types;
@@ -31,6 +33,23 @@ public class RamWidget(RamWidgetConfig config) : UpdateableWidget
         }
     }
 
+    public override List<Error> Validate()
+    {
+        var errors = new List<Error>();
+
+        if (Config.Color != null && !ColorHelper.IsValidColor(Config.Color))
+        {
+            errors.Add(new Error("Invalid color in RAM widget"));
+        }
+
+        if (Config.ValueSize <= 0)
+        {
+            errors.Add(new Error("Invalid Font size in RAM widget (Font size has to be greater than 0)"));
+        }
+
+        return errors;
+    }
+
     protected override Task Update()
     {
         var ram = SystemInfo.GetRam();
@@ -44,10 +63,9 @@ public class RamWidget(RamWidgetConfig config) : UpdateableWidget
     {
         return new RamWidgetControl(this);
     }
-    
+
     protected override TimeSpan UpdateInterval()
     {
         return TimeSpan.FromSeconds(1);
     }
-    
 }

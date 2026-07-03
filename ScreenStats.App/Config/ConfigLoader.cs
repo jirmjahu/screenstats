@@ -2,6 +2,7 @@
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using ScreenStats.App.Config.Models;
+using ScreenStats.App.Errors;
 
 namespace ScreenStats.App.Config;
 
@@ -9,6 +10,8 @@ public static class ConfigLoader
 {
     public static AppConfig Load(string path)
     {
+        ErrorManager.Clear();
+
         if (!File.Exists(path))
         {
             CreateDefaultConfig(path);
@@ -32,6 +35,7 @@ public static class ConfigLoader
         {
             if (!int.TryParse(section.Key, out var index))
             {
+                ErrorManager.Add("Invalid widget index! Widget indexes must be a non decimal number");
                 continue;
             }
 
@@ -62,6 +66,11 @@ public static class ConfigLoader
             else if (type == "weather")
             {
                 widget = section.Get<WeatherWidgetConfig>();
+            }
+            else
+            {
+                ErrorManager.Add($"Unknown widget type: {type}");
+                continue;
             }
 
             if (widget != null)

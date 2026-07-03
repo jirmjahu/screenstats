@@ -2,6 +2,8 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using ScreenStats.App.Config.Models;
+using ScreenStats.App.Controls;
+using ScreenStats.App.Errors;
 using ScreenStats.App.Helpers;
 using ScreenStats.App.Widgets;
 
@@ -9,7 +11,7 @@ namespace ScreenStats.App;
 
 public partial class MainWindow : Window
 {
-    private AppConfig _config;  
+    private AppConfig _config;
     private readonly WidgetManager _widgetManager;
 
     public MainWindow(AppConfig config, WidgetManager widgetManager)
@@ -17,23 +19,44 @@ public partial class MainWindow : Window
         InitializeComponent();
         _config = config;
         _widgetManager = widgetManager;
-
+        
         ApplyConfig();
         RenderWidgets();
     }
 
     private void ApplyConfig()
     {
-        var layout = _config.Layout;
+        // these are the default values if the config has errors
+        double width = 750;
+        double left = 20;
+        var color = "#90000000";
+        double padding = 15;
+        double cornerRadius = 10;
+        var backgroundEnabled = true;
+        var orientation = "vertical";
 
-        Width = layout.Width;
-        Left = layout.Left;
-
-        if (_config.Background.Enabled)
+        // if the config is fine, try to apply it
+        if (!ErrorManager.HasErrors())
         {
-            Background.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(_config.Background.Color);
-            Background.Padding = new Thickness(_config.Background.Padding);
-            Background.CornerRadius = new CornerRadius(_config.Background.CornerRadius);
+            var layout = _config.Layout;
+
+            width = layout.Width;
+            left = layout.Left;
+            color = _config.Background.Color;
+            padding = _config.Background.Padding;
+            cornerRadius = _config.Background.CornerRadius;
+            backgroundEnabled = _config.Background.Enabled;
+            orientation = _config.Layout.Orientation;
+        }
+
+        Width = width;
+        Left = left;
+
+        if (backgroundEnabled)
+        {
+            Background.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(color);
+            Background.Padding = new Thickness(padding);
+            Background.CornerRadius = new CornerRadius(cornerRadius);
         }
         else
         {
@@ -42,7 +65,7 @@ public partial class MainWindow : Window
             Background.CornerRadius = new CornerRadius(0);
         }
 
-        Panel.Orientation = layout.Orientation?.ToLower() == "horizontal"
+        Panel.Orientation = orientation.ToLower() == "horizontal"
             ? Orientation.Horizontal
             : Orientation.Vertical;
 
@@ -52,6 +75,16 @@ public partial class MainWindow : Window
     private void RenderWidgets()
     {
         Panel.Children.Clear();
+        
+        if (ErrorManager.HasErrors())
+        {
+            foreach (var error in ErrorManager.Errors)
+            {
+                Panel.Children.Add(new ErrorControl(error.Message));
+            }
+            return;
+        }
+        
         WidgetRenderer.Render(Panel, _config.Layout, _widgetManager.Widgets);
     }
     

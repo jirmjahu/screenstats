@@ -1,11 +1,12 @@
 ﻿using ScreenStats.App.Config.Models;
+using ScreenStats.App.Errors;
 using ScreenStats.App.Widgets.Types;
 
 namespace ScreenStats.App.Widgets;
 
 public class WidgetManager
 {
-    public List<Widget> Widgets { get; set; } = [];
+    public List<Widget> Widgets { get; } = [];
 
     public void Load(AppConfig config)
     {
@@ -55,7 +56,26 @@ public class WidgetManager
                 case WeatherWidgetConfig weatherConfig:
                     widgets.Add(new WeatherWidget(weatherConfig));
                     break;
+                default:
+                    ErrorManager.Add($"Unknown widget type: {config.GetType()}");
+                    break;
             }
+        }
+        
+        // validate widgets
+        var errors = new List<Error>();
+        
+        foreach (var widget in widgets)
+        {
+            foreach (var error in widget.Validate())
+            {
+                errors.Add(error);
+            }
+        }
+        
+        foreach (var error in errors)
+        {
+            ErrorManager.Add(error.Message);
         }
 
         return widgets;

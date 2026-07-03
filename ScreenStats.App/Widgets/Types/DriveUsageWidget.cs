@@ -1,6 +1,7 @@
 ﻿using System.Windows.Controls;
 using ScreenStats.App.Config.Models;
 using ScreenStats.App.Controls;
+using ScreenStats.App.Errors;
 using ScreenStats.App.Info;
 
 namespace ScreenStats.App.Widgets.Types;
@@ -27,6 +28,18 @@ public class DriveUsageWidget(DriveUsageConfig config) : UpdateableWidget
             field = value;
             OnPropertyChanged();
         }
+    }
+
+    public override List<Error> Validate()
+    {
+        var errors = new List<Error>();
+
+        if (string.IsNullOrWhiteSpace(Config.Drive))
+        {
+            errors.Add(new Error("No drive specified in DriveUsage widget"));
+        }
+
+        return errors;
     }
 
     protected override Task Update()
