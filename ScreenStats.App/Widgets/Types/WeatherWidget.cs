@@ -39,6 +39,11 @@ public class WeatherWidget(WeatherWidgetConfig config) : UpdateableWidget
             errors.Add(new Error("No country specified in Weather widget"));
         }
 
+        if (string.IsNullOrWhiteSpace(Config.Content))
+        {
+            errors.Add(new Error("No content specified in Weather widget"));
+        }
+
         return errors;
     }
 
@@ -73,5 +78,4 @@ public class WeatherWidget(WeatherWidgetConfig config) : UpdateableWidget
     {
         return TimeSpan.FromMinutes(10);
     }
-
 }

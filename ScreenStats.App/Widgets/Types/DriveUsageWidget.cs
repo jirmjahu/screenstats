@@ -39,6 +39,11 @@ public class DriveUsageWidget(DriveUsageConfig config) : UpdateableWidget
             errors.Add(new Error("No drive specified in DriveUsage widget"));
         }
 
+        if (string.IsNullOrWhiteSpace(Config.Content))
+        {
+            errors.Add(new Error("No content specified in DriveUsage widget"));
+        }
+
         return errors;
     }
 
@@ -46,8 +51,13 @@ public class DriveUsageWidget(DriveUsageConfig config) : UpdateableWidget
     {
         var drive = SystemInfo.GetDrive(Config.Drive!);
 
-        Usage = drive.UsedPercentage;
+        if (drive == null)
+        {
+            return Task.CompletedTask;
+        }
 
+        Usage = drive.UsedPercentage;
+        
         DisplayText = Config.Content!
             .Replace("\\n", Environment.NewLine)
             .Replace("{letter}", Config.Drive)
