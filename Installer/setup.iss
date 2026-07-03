@@ -1,5 +1,5 @@
 #define MyAppName "ScreenStats"
-#define MyAppVersion "0.0.1"
+#define MyAppVersion "1.0.0"
 #define MyAppPublisher "https://github.com/jirmjahu"
 #define MyAppURL "https://github.com/jirmjahu/screenstats"
 #define MyAppExeName "ScreenStats.App.exe"
